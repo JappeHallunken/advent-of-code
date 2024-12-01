@@ -4,7 +4,6 @@ import (
   "strconv"
   "strings"
   "os"
-  "slices"
   "log"
 )
 
@@ -35,10 +34,3 @@ func MakeSlices(body []byte) (firstElements, secondElements []int) {
 	}
 	return firstElements, secondElements
 }
-
-func SortSlices(firstElements, secondElements []int) (sortedFirstElements, sortedSecondElements []int) {
-	slices.Sort(firstElements)
-	slices.Sort(secondElements)
-	return firstElements, secondElements
-}
-

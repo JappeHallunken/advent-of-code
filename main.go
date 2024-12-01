@@ -13,8 +13,8 @@ func main() {
 	sortedFirstElements, sortedSecondElements := fileops.SortSlices(firstElements, secondElements)
   
   diff := puzzles.SumDiff(sortedFirstElements, sortedSecondElements)
-  fmt.Println("First Puzzle: ", diff)
+  fmt.Println("Day  1 Puzzle 1: ", diff)
 	score := puzzles.SimilarityScore(firstElements, secondElements)
-  fmt.Println("Second Puzzle: ", score)
+  fmt.Println("Day  1 puzzle 2: ", score)
 
 }

@@ -1,17 +1,25 @@
 package puzzles
 
-import "github.com/JappeHallunken/advent-of-code/fileops"
+import (
+	"slices"
+)
 
-// puzzle 1
+///////////////////////////////////////// puzzle 1
+
+func sortSlices(firstElements, secondElements []int) (sortedFirstElements, sortedSecondElements []int) {
+	slices.Sort(firstElements)
+	slices.Sort(secondElements)
+	return firstElements, secondElements
+}
 
 func SumDiff(firstElements, secondElements []int) (sum int) {
 	sum = 0
 
-  //sort the slices
-	sortedFirstElements, sortedSecondElements := fileops.SortSlices(firstElements, secondElements)
-  
-  // calculate the sum
-  for i := range sortedFirstElements {
+	//sort the slices
+	sortedFirstElements, sortedSecondElements := sortSlices(firstElements, secondElements)
+
+	// calculate the sum
+	for i := range sortedFirstElements {
 		diff := sortedFirstElements[i] - sortedSecondElements[i]
 		if diff < 0 {
 			diff *= -1
@@ -22,7 +30,7 @@ func SumDiff(firstElements, secondElements []int) (sum int) {
 	return sum
 }
 
-// puzzle 2
+///////////////////////////////////////// puzzle 2
 
 func SimilarityScore(firstElements, secondElements []int) (score int) {
 	score = 0

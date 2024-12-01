@@ -6,7 +6,6 @@ import (
   "github.com/JappeHallunken/advent-of-code/fileops"
   "github.com/JappeHallunken/advent-of-code/puzzles"
 )
-
 func main() {
 
 	body := fileops.ReadFile()

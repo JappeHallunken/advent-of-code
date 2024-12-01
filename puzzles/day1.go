@@ -1,11 +1,18 @@
 package puzzles
 
+import "github.com/JappeHallunken/advent-of-code/fileops"
+
 // puzzle 1
 
 func SumDiff(firstElements, secondElements []int) (sum int) {
 	sum = 0
-	for i := range firstElements {
-		diff := firstElements[i] - secondElements[i]
+
+  //sort the slices
+	sortedFirstElements, sortedSecondElements := fileops.SortSlices(firstElements, secondElements)
+  
+  // calculate the sum
+  for i := range sortedFirstElements {
+		diff := sortedFirstElements[i] - sortedSecondElements[i]
 		if diff < 0 {
 			diff *= -1
 		}
@@ -14,7 +21,6 @@ func SumDiff(firstElements, secondElements []int) (sum int) {
 	// fmt.Println(sum)
 	return sum
 }
-
 
 // puzzle 2
 

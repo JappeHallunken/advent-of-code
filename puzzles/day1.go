@@ -26,7 +26,6 @@ func SumDiff(firstElements, secondElements []int) (sum int) {
 		}
 		sum += diff
 	}
-	// fmt.Println(sum)
 	return sum
 }
 
@@ -40,10 +39,8 @@ func SimilarityScore(firstElements, secondElements []int) (score int) {
 
 			if firstElements[i] == secondElements[j] {
 				multiplier++
-				// fmt.Println(i, j, multiplier)
 			}
 			score = score + (firstElements[i] * multiplier)
-			// fmt.Println(score)
 		}
 	}
 	return score

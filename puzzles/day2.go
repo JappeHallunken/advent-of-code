@@ -47,8 +47,7 @@ func SequenceType(numbers []int) int {
 		return 0
 	}
 
-	increasing := true
-	decreasing := true
+	increasing, decreasing := true, true
 	for i := 1; i < len(numbers); i++ {
 		diff := numbers[i] - numbers[i-1]
 		if diff < 1 || diff > 3 {

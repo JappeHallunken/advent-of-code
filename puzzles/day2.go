@@ -67,8 +67,7 @@ func SequenceType(numbers []int) int {
 func CountValidSequencesWithOneRemoved(numbers []int) int {
     validCount := 0
     for i := range numbers {
-        removedSlice := append([]int(nil), numbers[:i]...)
-        removedSlice = append(removedSlice, numbers[i+1:]...)
+        removedSlice := append(numbers[:i:i], numbers[i+1:]...)
         if SequenceType(removedSlice) > 0 {
             validCount++
             break

@@ -7,8 +7,8 @@ import (
   "log"
 )
 
-func ReadFile() []byte {
-	body, err := os.ReadFile("pairs.txt")
+func ReadFile(path string) []byte {
+	body, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalf("unable to read file: %v", err)
 	}

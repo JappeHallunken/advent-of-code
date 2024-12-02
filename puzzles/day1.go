@@ -1,6 +1,8 @@
 package puzzles
 
 import (
+	"fmt"
+	"github.com/JappeHallunken/advent-of-code/fileops"
 	"slices"
 )
 
@@ -44,4 +46,17 @@ func SimilarityScore(firstElements, secondElements []int) (score int) {
 		}
 	}
 	return score
+}
+
+func Day1() {
+	// puzzle 1
+	body := fileops.ReadFile("input/day1.txt")
+	firstElements, secondElements := fileops.MakeSlices(body)
+
+	diff := SumDiff(firstElements, secondElements)
+	fmt.Println("Day  1 Puzzle 1: ", diff)
+
+	// puzzle 2
+	score := SimilarityScore(firstElements, secondElements)
+	fmt.Println("Day  1 puzzle 2: ", score)
 }

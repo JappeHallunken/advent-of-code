@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func SafetyCheck() {
+func Day2() {
 	// fmt.Println("Day 2")
 	body := fileops.ReadFile("input/day2.txt")
 

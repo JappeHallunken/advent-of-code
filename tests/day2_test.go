@@ -44,4 +44,3 @@ func TestCustomSequences(t *testing.T) {
 		}
 	})
 }
-

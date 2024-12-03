@@ -6,7 +6,8 @@ import (
 
 func main() {
 	puzzles.Day1()
-  puzzles.SafetyCheck()
+  puzzles.Day2()
+  puzzles.Day3()
 
 
 }

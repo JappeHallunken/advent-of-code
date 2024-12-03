@@ -9,7 +9,7 @@ import (
 
 func Day2() {
 	// fmt.Println("Day 2")
-	body := fileops.ReadFile("input/day2.txt")
+	body, _ := fileops.ReadFile("input/day2.txt")
 
 	lines := strings.Split(string(body), "\n")
 	totalScore1 := 0

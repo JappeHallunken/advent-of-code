@@ -50,7 +50,7 @@ func SimilarityScore(firstElements, secondElements []int) (score int) {
 
 func Day1() {
 	// puzzle 1
-	body := fileops.ReadFile("input/day1.txt")
+	body, _ := fileops.ReadFile("input/day1.txt")
 	firstElements, secondElements := fileops.MakeSlices(body)
 
 	diff := SumDiff(firstElements, secondElements)

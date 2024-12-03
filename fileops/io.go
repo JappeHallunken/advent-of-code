@@ -4,16 +4,15 @@ import (
   "strconv"
   "strings"
   "os"
-  "log"
 )
 
-func ReadFile(path string) []byte {
+func ReadFile(path string) ([]byte, error) {
 	body, err := os.ReadFile(path)
 	if err != nil {
-		log.Fatalf("unable to read file: %v", err)
+		return nil, err
 	}
 
-	return body
+	return body, nil
 }
 
 func MakeSlices(body []byte) (firstElements, secondElements []int) {

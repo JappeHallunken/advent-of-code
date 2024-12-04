@@ -35,20 +35,30 @@ func FindMatch(array [][]rune) int {
 	counter := 0
 	for i, row := range array {
 		for j, rune := range row {
-			if rune == targets[0] {
-				for _, direction := range directions {
+			if rune == targets[0] { //Find the 'X'
+				for _, direction := range directions { //iterate over all directions
+
 					x, y := i, j
-					targetIndex := 1
+					targetIndex := 1 //set target to 'M'
+
+					// Check if the remaining word fits in the current direction, if not continue
+					if x+direction[0]*(wordLength-1) < 0 ||
+						x+direction[0]*(wordLength-1) >= len(array) ||
+						y+direction[1]*(wordLength-1) < 0 ||
+						y+direction[1]*(wordLength-1) >= len(array[0]) {
+						continue
+					}
+
 					for {
-						x += direction[0]
+						x += direction[0] // continue search in the current direction
 						y += direction[1]
-						if x < 0 || x >= len(array) || y < 0 || y >= len(array[0]) || targetIndex >= wordLength {
+						if targetIndex >= wordLength { // check if we are at 'S'
 							break
 						}
 
-						if array[x][y] == targets[targetIndex] {
+						if array[x][y] == targets[targetIndex] { //If we found the next rune, set index to the next one
 							targetIndex++
-							if targetIndex == wordLength {
+							if targetIndex == wordLength { //if we are at the end of our target array we know, we found every target, so it's a match!
 								counter++
 							}
 						} else {
@@ -109,6 +119,6 @@ func Day4(input string) {
 	counter := FindMatch(xmasArray)
 	fmt.Println("Day 4 puzzle 1: ", counter)
 
-  counter2 := FindMatch2(xmasArray)
-  fmt.Println("Day 4 puzzle 2: ", counter2)
+	counter2 := FindMatch2(xmasArray)
+	fmt.Println("Day 4 puzzle 2: ", counter2)
 }

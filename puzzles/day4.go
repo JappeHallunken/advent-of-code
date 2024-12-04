@@ -42,12 +42,10 @@ func FindMatch(array [][]rune) int {
 					for {
 						x += direction[0]
 						y += direction[1]
-						if x < 0 || x >= len(array) || y < 0 || y >= len(array[0]) {
+						if x < 0 || x >= len(array) || y < 0 || y >= len(array[0]) || targetIndex >= wordLength {
 							break
 						}
-						if targetIndex >= wordLength {
-							break
-						}
+
 						if array[x][y] == targets[targetIndex] {
 							targetIndex++
 							if targetIndex == wordLength {
@@ -71,9 +69,46 @@ func FindMatch(array [][]rune) int {
 	return counter
 }
 
+func FindMatch2(array [][]rune) int {
+	counter := 0
+	for i := 1; i < len(array)-1; i++ { // Skip the first and last row
+		row := array[i]
+		for j := 1; j < len(row)-1; j++ { // Skip the first and last elements
+			rune := row[j]
+			if rune == 'A' {
+
+				if array[i-1][j-1] == 'S' && array[i+1][j+1] == 'M' &&
+					array[i-1][j+1] == 'M' && array[i+1][j-1] == 'S' {
+					counter++
+					continue
+				}
+				if array[i-1][j-1] == 'S' && array[i+1][j+1] == 'M' &&
+					array[i-1][j+1] == 'S' && array[i+1][j-1] == 'M' {
+					counter++
+					continue
+				}
+				if array[i-1][j-1] == 'M' && array[i+1][j+1] == 'S' &&
+					array[i-1][j+1] == 'M' && array[i+1][j-1] == 'S' {
+					counter++
+					continue
+				}
+				if array[i-1][j-1] == 'M' && array[i+1][j+1] == 'S' &&
+					array[i-1][j+1] == 'S' && array[i+1][j-1] == 'M' {
+					counter++
+					continue
+				}
+			}
+		}
+	}
+	return counter
+}
+
 func Day4(input string) {
 	body, _ := fileops.ReadFile(input)
 	xmasArray := MakeArrays(body)
 	counter := FindMatch(xmasArray)
 	fmt.Println("Day 4 puzzle 1: ", counter)
+
+  counter2 := FindMatch2(xmasArray)
+  fmt.Println("Day 4 puzzle 2: ", counter2)
 }

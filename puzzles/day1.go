@@ -54,9 +54,9 @@ func Day1() {
 	firstElements, secondElements := fileops.MakeSlices(body)
 
 	diff := SumDiff(firstElements, secondElements)
-	fmt.Println("Day  1 Puzzle 1: ", diff)
+	fmt.Println("Day 1 Puzzle 1: ", diff)
 
 	// puzzle 2
 	score := SimilarityScore(firstElements, secondElements)
-	fmt.Println("Day  1 puzzle 2: ", score)
+	fmt.Println("Day 1 puzzle 2: ", score)
 }

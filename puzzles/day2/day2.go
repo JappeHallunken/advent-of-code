@@ -7,32 +7,6 @@ import (
 	"strings"
 )
 
-func Day2() {
-	// fmt.Println("Day 2")
-	body, _ := fileops.ReadFile("input/day2.txt")
-
-	lines := strings.Split(string(body), "\n")
-	totalScore1 := 0
-	totalScore2 := 0
-	for _, l := range lines {
-		nmbs := extractNumbers(l)
-		// fmt.Println(numbers)
-		score := sequenceType(nmbs)
-    // fmt.Println("Score: ", score)
-		totalScore1 += score
-	}
-	fmt.Println("Day 2 puzzle 1: ", totalScore1)
-
-	for _, l := range lines {
-		nmbs := extractNumbers(l)
-		// fmt.Println(numbers)
-		score2 := countValidSequencesWithOneRemoved(nmbs)
-		totalScore2 += score2
-	}
-
-	fmt.Println("Day 2 puzzle 2: ", totalScore2)
-}
-
 func extractNumbers(line string) (numbers []int) {
 	elements := strings.Fields(line)
 	for _, element := range elements {
@@ -66,14 +40,45 @@ func sequenceType(numbers []int) int {
 }
 
 func countValidSequencesWithOneRemoved(numbers []int) int {
-    validCount := 0
-    for i := range numbers {
-        removedSlice := append([]int(nil), numbers[:i]...)
-        removedSlice = append(removedSlice, numbers[i+1:]...)
-        if sequenceType(removedSlice) > 0 {
-            validCount++
-            break
-        }
-    }
-    return validCount
+	validCount := 0
+	for i := range numbers {
+		removedSlice := append([]int(nil), numbers[:i]...)
+		removedSlice = append(removedSlice, numbers[i+1:]...)
+		if sequenceType(removedSlice) > 0 {
+			validCount++
+			break
+		}
+	}
+	return validCount
+}
+
+func Day2(input string) {
+	// fmt.Println("Day 2")
+	body, err := fileops.ReadFile(input)
+	if err != nil {
+    fmt.Printf("Day 2: Error reading file: %v\n", err)
+		return
+	} else {
+
+		lines := strings.Split(string(body), "\n")
+		totalScore1 := 0
+		totalScore2 := 0
+		for _, l := range lines {
+			nmbs := extractNumbers(l)
+			// fmt.Println(numbers)
+			score := sequenceType(nmbs)
+			// fmt.Println("Score: ", score)
+			totalScore1 += score
+		}
+		fmt.Println("Day 2 puzzle 1: ", totalScore1)
+
+		for _, l := range lines {
+			nmbs := extractNumbers(l)
+			// fmt.Println(numbers)
+			score2 := countValidSequencesWithOneRemoved(nmbs)
+			totalScore2 += score2
+		}
+
+		fmt.Println("Day 2 puzzle 2: ", totalScore2)
+	}
 }

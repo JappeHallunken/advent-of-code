@@ -67,24 +67,28 @@ func makeString(body []byte) string {
 
 // ///"main"
 
-func Day3() {
+func Day3(input string) {
 	// Read the input file
-	body, _ := fileops.ReadFile("input/day3.txt")
-
-	// Puzzle 1: Calculate the sum
-	sum, err := calculateSum(body)
+	body, err := fileops.ReadFile(input)
 	if err != nil {
-		fmt.Println("Error in Puzzle 1: ", err)
-		return
-	}
-	fmt.Println("Day 3 puzzle 1: ", sum)
+		fmt.Printf("Day 3: Error reading file: %v\n", err)
+	} else {
 
-	// Puzzle 2: Transform the string and calculate the sum again
-	transformedString := makeString(body)
-	sum2, err2 := calculateSum([]byte(transformedString))
-	if err2 != nil {
-		fmt.Println("Error in Puzzle 2: ", err2)
-		return
+		// Puzzle 1: Calculate the sum
+		sum, err := calculateSum(body)
+		if err != nil {
+			fmt.Println("Error in Puzzle 1: ", err)
+			return
+		}
+		fmt.Println("Day 3 puzzle 1: ", sum)
+
+		// Puzzle 2: Transform the string and calculate the sum again
+		transformedString := makeString(body)
+		sum2, err2 := calculateSum([]byte(transformedString))
+		if err2 != nil {
+			fmt.Println("Error in Puzzle 2: ", err2)
+			return
+		}
+		fmt.Println("Day 3 puzzle 2: ", sum2)
 	}
-	fmt.Println("Day 3 puzzle 2: ", sum2)
 }

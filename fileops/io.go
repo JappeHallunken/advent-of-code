@@ -1,18 +1,15 @@
 package fileops
 
 import (
-  "strconv"
-  "strings"
-  "os"
+	"os"
+	"strconv"
+	"strings"
 )
 
 func ReadFile(path string) ([]byte, error) {
 	body, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
 
-	return body, nil
+	return  body, err
 }
 
 func MakeSlices(body []byte) (firstElements, secondElements []int) {

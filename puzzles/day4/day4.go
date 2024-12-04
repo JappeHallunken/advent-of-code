@@ -100,12 +100,17 @@ func findMatch2(array [][]rune) int { //search for diagonal MAS
 
 func Day4(input string) {
 	// prepare array
-	body, _ := fileops.ReadFile(input)
-	xmasArray := makeArrays(body)
-	// puzzle 1
-	counter := findMatch(xmasArray)
-	fmt.Println("Day 4 puzzle 1: ", counter)
-	// puzzle 2
-	counter2 := findMatch2(xmasArray)
-	fmt.Println("Day 4 puzzle 2: ", counter2)
+	body, err := fileops.ReadFile(input)
+	if err != nil {
+		fmt.Printf("Day 4: Error reading file: %v\n", err)
+	} else {
+		xmasArray := makeArrays(body)
+
+		// puzzle 1
+		counter := findMatch(xmasArray)
+		fmt.Println("Day 4 puzzle 1: ", counter)
+		// puzzle 2
+		counter2 := findMatch2(xmasArray)
+		fmt.Println("Day 4 puzzle 2: ", counter2)
+	}
 }

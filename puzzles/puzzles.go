@@ -9,8 +9,8 @@ import (
 )
 
 func SolveAll() {
-  day1.Day1()
-  day2.Day2()
-  day3.Day3()
-  day4.Day4("input/day4.txt")
+  day1.Day1("./input/day1.txt")
+  day2.Day2("./input/day2.txt")
+  day3.Day3("./input/day3.txt")
+  day4.Day4("./input/day4.txt")
 }

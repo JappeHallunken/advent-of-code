@@ -1,16 +1,25 @@
 package puzzles
 
-
 import (
-  "github.com/JappeHallunken/advent-of-code/puzzles/day1"
-  "github.com/JappeHallunken/advent-of-code/puzzles/day2"
-  "github.com/JappeHallunken/advent-of-code/puzzles/day3"
-  "github.com/JappeHallunken/advent-of-code/puzzles/day4"
+	"fmt"
+
+	"github.com/JappeHallunken/advent-of-code/puzzles/day1"
+	"github.com/JappeHallunken/advent-of-code/puzzles/day2"
+	"github.com/JappeHallunken/advent-of-code/puzzles/day3"
+	"github.com/JappeHallunken/advent-of-code/puzzles/day4"
 )
 
 func SolveAll() {
-  day1.Day1("./input/day1.txt")
-  day2.Day2("./input/day2.txt")
-  day3.Day3("./input/day3.txt")
-  day4.Day4("./input/day4.txt")
+	d1p1, d1p2 := day1.Day1("./input/day1.txt")
+	fmt.Printf("\nDay 1 puzzle 1: %v\nDay 1 puzzle 2: %v \n------------------------------\n\n", d1p1, d1p2)
+
+	d2p1, d2p2 := day2.Day2("./input/day2.txt")
+	fmt.Printf("Day 2 puzzle 1: %v\nDay 2 puzzle 2: %v \n------------------------------\n\n", d2p1, d2p2)
+
+	d3p1, d3p2 := day3.Day3("./input/day3.txt")
+	fmt.Printf("Day 3 puzzle 1: %v\nDay 3 puzzle 2: %v \n------------------------------\n\n", d3p1, d3p2)
+
+  d4p1, d4p2 := day4.Day4("./input/day4.txt")
+	fmt.Printf("Day 4 puzzle 1: %v\nDay 4 puzzle 2: %v \n------------------------------\n\n", d4p1, d4p2)
+
 }

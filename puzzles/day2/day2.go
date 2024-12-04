@@ -52,11 +52,11 @@ func countValidSequencesWithOneRemoved(numbers []int) int {
 	return validCount
 }
 
-func Day2(input string) {
+func Day2(input string) (totalScore1, totalscore2 int) {
 	// fmt.Println("Day 2")
 	body, err := fileops.ReadFile(input)
 	if err != nil {
-    fmt.Printf("Day 2: Error reading file: %v\n", err)
+		fmt.Printf("Day 2: Error reading file: %v\n", err)
 		return
 	} else {
 
@@ -70,7 +70,6 @@ func Day2(input string) {
 			// fmt.Println("Score: ", score)
 			totalScore1 += score
 		}
-		fmt.Println("Day 2 puzzle 1: ", totalScore1)
 
 		for _, l := range lines {
 			nmbs := extractNumbers(l)
@@ -79,6 +78,6 @@ func Day2(input string) {
 			totalScore2 += score2
 		}
 
-		fmt.Println("Day 2 puzzle 2: ", totalScore2)
+		return totalScore1, totalScore2
 	}
 }

@@ -56,6 +56,11 @@ func FindMatch(array [][]rune) int {
 						} else {
 							break
 						}
+						// Check if the word would fit in the remaining space
+						if x+(wordLength-targetIndex)*direction[0] >= len(array) ||
+							y+(wordLength-targetIndex)*direction[1] >= len(array[0]) {
+							break
+						}
 					}
 
 				}

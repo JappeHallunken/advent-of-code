@@ -1,9 +1,8 @@
-package tests
+package day3
 
 import (
 	"testing"
 
-	"github.com/JappeHallunken/advent-of-code/puzzles"
 )
 func MockReadFile() []byte {
 	return []byte("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))")
@@ -19,7 +18,7 @@ func TestCalculateSum(t *testing.T) {
 
 		body := MockReadFile()
 
-		actual, _ := puzzles.CalculateSum(body)
+		actual, _ := calculateSum(body)
 
 		if actual != expected {
 			t.Errorf("Expected %d, got %d", expected, actual)
@@ -31,9 +30,9 @@ func TestMakeString(t *testing.T) {
 	t.Run("TestMakeString", func(t *testing.T) {
 		body := MockReadFile2()
 
-		newString := puzzles.MakeString(body)
+		newString := makeString(body)
 
-		actual, _ := puzzles.CalculateSum([]byte(newString))
+		actual, _ := calculateSum([]byte(newString))
 
 		expected := 48
 

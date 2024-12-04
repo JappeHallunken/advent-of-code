@@ -1,4 +1,4 @@
-package puzzles
+package day3
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 )
 
 // /puzzle 1
-func CalculateSum(body []byte) (int, error) {
+func calculateSum(body []byte) (int, error) {
 	pattern := `mul\((\d{1,3}),(\d{1,3})\)`
 
 	// Regex kompilieren
@@ -37,7 +37,7 @@ func CalculateSum(body []byte) (int, error) {
 
 //puzzle 2
 
-func MakeString(body []byte) string {
+func makeString(body []byte) string {
 	// Create a buffer to store the resulting string
 	var result bytes.Buffer
 	// Start iterating using a while-like loop
@@ -72,7 +72,7 @@ func Day3() {
 	body, _ := fileops.ReadFile("input/day3.txt")
 
 	// Puzzle 1: Calculate the sum
-	sum, err := CalculateSum(body)
+	sum, err := calculateSum(body)
 	if err != nil {
 		fmt.Println("Error in Puzzle 1: ", err)
 		return
@@ -80,8 +80,8 @@ func Day3() {
 	fmt.Println("Day 3 puzzle 1: ", sum)
 
 	// Puzzle 2: Transform the string and calculate the sum again
-	transformedString := MakeString(body)
-	sum2, err2 := CalculateSum([]byte(transformedString))
+	transformedString := makeString(body)
+	sum2, err2 := calculateSum([]byte(transformedString))
 	if err2 != nil {
 		fmt.Println("Error in Puzzle 2: ", err2)
 		return

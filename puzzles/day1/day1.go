@@ -1,4 +1,4 @@
-package puzzles
+package day1
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ func sortSlices(firstElements, secondElements []int) (sortedFirstElements, sorte
 	return firstElements, secondElements
 }
 
-func SumDiff(firstElements, secondElements []int) (sum int) {
+func sumDiff(firstElements, secondElements []int) (sum int) {
 	sum = 0
 
 	//sort the slices
@@ -33,7 +33,7 @@ func SumDiff(firstElements, secondElements []int) (sum int) {
 
 ///////////////////////////////////////// puzzle 2
 
-func SimilarityScore(firstElements, secondElements []int) (score int) {
+func similarityScore(firstElements, secondElements []int) (score int) {
 	score = 0
 	for i := range firstElements {
 		for j := range secondElements {
@@ -53,10 +53,10 @@ func Day1() {
 	body, _ := fileops.ReadFile("input/day1.txt")
 	firstElements, secondElements := fileops.MakeSlices(body)
 
-	diff := SumDiff(firstElements, secondElements)
+	diff := sumDiff(firstElements, secondElements)
 	fmt.Println("Day 1 Puzzle 1: ", diff)
 
 	// puzzle 2
-	score := SimilarityScore(firstElements, secondElements)
+	score := similarityScore(firstElements, secondElements)
 	fmt.Println("Day 1 puzzle 2: ", score)
 }

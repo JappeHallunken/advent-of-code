@@ -1,4 +1,4 @@
-package puzzles
+package day4
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/JappeHallunken/advent-of-code/fileops"
 )
 
-func MakeArrays(body []byte) [][]rune { //take the textfile and make a 2d array
+func makeArrays(body []byte) [][]rune { //take the textfile and make a 2d array
 
 	lines := strings.Split(strings.TrimSpace(string(body)), "\n")
 	var xmasArray [][]rune
@@ -19,7 +19,7 @@ func MakeArrays(body []byte) [][]rune { //take the textfile and make a 2d array
 }
 
 // puzzle
-func FindMatch(array [][]rune) int {
+func findMatch(array [][]rune) int {
 	directions := [8][2]int{ //possible directions to look for the next rune
 		{0, 1},   //right
 		{0, -1},  //left
@@ -73,7 +73,7 @@ func FindMatch(array [][]rune) int {
 }
 
 // /puzzle 2
-func FindMatch2(array [][]rune) int { //search for diagonal MAS
+func findMatch2(array [][]rune) int { //search for diagonal MAS
 	counter := 0
 	for i := 1; i < len(array)-1; i++ { // Skip the first and last row, since the word is diagonal
 		row := array[i]
@@ -101,11 +101,11 @@ func FindMatch2(array [][]rune) int { //search for diagonal MAS
 func Day4(input string) {
 	// prepare array
 	body, _ := fileops.ReadFile(input)
-	xmasArray := MakeArrays(body)
+	xmasArray := makeArrays(body)
 	// puzzle 1
-	counter := FindMatch(xmasArray)
+	counter := findMatch(xmasArray)
 	fmt.Println("Day 4 puzzle 1: ", counter)
 	// puzzle 2
-	counter2 := FindMatch2(xmasArray)
+	counter2 := findMatch2(xmasArray)
 	fmt.Println("Day 4 puzzle 2: ", counter2)
 }

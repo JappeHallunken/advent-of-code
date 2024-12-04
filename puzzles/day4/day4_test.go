@@ -1,11 +1,10 @@
-package tests
+package day4
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/JappeHallunken/advent-of-code/fileops"
-	"github.com/JappeHallunken/advent-of-code/puzzles"
 )
 
 func TestFindMatch(t *testing.T) {
@@ -13,17 +12,17 @@ func TestFindMatch(t *testing.T) {
     
   
     // Read the test input from a file
-    inputFile := "../input/day4_test.txt"
+    inputFile := "../../input/day4_test.txt"
     body, err := fileops.ReadFile(inputFile)
     if err != nil {
         t.Fatal(err)
     }
 
     // Convert the input data to a 2D array of runes
-    xmasArray := puzzles.MakeArrays(body)
+    xmasArray := makeArrays(body)
 
     // Call the findMatch function with the input data
-    counter := puzzles.FindMatch(xmasArray)
+    counter := findMatch(xmasArray)
 
     // Assert on the returned value
     expectedCounter := 18 // Replace with the expected counter value
@@ -38,15 +37,15 @@ func TestFindMatch2(t *testing.T) {
     
   
     // Read the test input from a file
-    inputFile := "../input/day4_test2.txt"
+    inputFile := "../../input/day4_test2.txt"
     body, err := fileops.ReadFile(inputFile)
     if err != nil {
         t.Fatal(err)
     }
 
-    xmasArray := puzzles.MakeArrays(body)
+    xmasArray := makeArrays(body)
 
-    counter := puzzles.FindMatch2(xmasArray)
+    counter := findMatch2(xmasArray)
 
     expectedCounter := 9 // Replace with the expected counter value
 

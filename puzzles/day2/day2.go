@@ -1,4 +1,4 @@
-package puzzles
+package day2
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ func Day2() {
 	for _, l := range lines {
 		nmbs := extractNumbers(l)
 		// fmt.Println(numbers)
-		score := SequenceType(nmbs)
+		score := sequenceType(nmbs)
     // fmt.Println("Score: ", score)
 		totalScore1 += score
 	}
@@ -26,7 +26,7 @@ func Day2() {
 	for _, l := range lines {
 		nmbs := extractNumbers(l)
 		// fmt.Println(numbers)
-		score2 := CountValidSequencesWithOneRemoved(nmbs)
+		score2 := countValidSequencesWithOneRemoved(nmbs)
 		totalScore2 += score2
 	}
 
@@ -42,7 +42,7 @@ func extractNumbers(line string) (numbers []int) {
 	return numbers
 }
 
-func SequenceType(numbers []int) int {
+func sequenceType(numbers []int) int {
 	if len(numbers) <= 1 {
 		return 0
 	}
@@ -65,12 +65,12 @@ func SequenceType(numbers []int) int {
 	return 0
 }
 
-func CountValidSequencesWithOneRemoved(numbers []int) int {
+func countValidSequencesWithOneRemoved(numbers []int) int {
     validCount := 0
     for i := range numbers {
         removedSlice := append([]int(nil), numbers[:i]...)
         removedSlice = append(removedSlice, numbers[i+1:]...)
-        if SequenceType(removedSlice) > 0 {
+        if sequenceType(removedSlice) > 0 {
             validCount++
             break
         }

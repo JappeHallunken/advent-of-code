@@ -1,8 +1,7 @@
-package tests
+package day1
 
 import (
 	"testing"
-	"github.com/JappeHallunken/advent-of-code/puzzles"
 )
 
 // Helper function to avoid code repetition
@@ -38,7 +37,7 @@ func TestPuzzles(t *testing.T) {
 
 	// Run SimilarityScore tests
 	t.Run("SimilarityScore", func(t *testing.T) {
-		runTest(t, similarityTests, puzzles.SimilarityScore, firstElements, secondElements)
+		runTest(t, similarityTests, similarityScore, firstElements, secondElements)
 	})
 
 	// Test cases for SumDiff
@@ -54,6 +53,6 @@ func TestPuzzles(t *testing.T) {
 
 	// Run SumDiff tests
 	t.Run("SumDiff", func(t *testing.T) {
-		runTest(t, sumDiffTests, puzzles.SumDiff, firstElements, secondElements)
+		runTest(t, sumDiffTests, sumDiff, firstElements, secondElements)
 	})
 }

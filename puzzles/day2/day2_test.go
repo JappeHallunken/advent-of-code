@@ -1,9 +1,7 @@
-
-package tests
+package day2
 
 import (
 	"testing"
-	"github.com/JappeHallunken/advent-of-code/puzzles"
 )
 
 func TestCustomSequences(t *testing.T) {
@@ -21,7 +19,7 @@ func TestCustomSequences(t *testing.T) {
 		totalScore1 := 0
 
 		for _, sequence := range sequences {
-			score := puzzles.SequenceType(sequence)
+			score :=sequenceType(sequence)
 			totalScore1 += score
 		}
 
@@ -35,7 +33,7 @@ func TestCustomSequences(t *testing.T) {
 		totalScore2 := 0
 
 		for _, sequence := range sequences {
-			score := puzzles.CountValidSequencesWithOneRemoved(sequence)
+			score := countValidSequencesWithOneRemoved(sequence)
 			totalScore2 += score
 		}
 

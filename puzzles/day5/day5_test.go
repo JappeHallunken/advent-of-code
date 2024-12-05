@@ -7,23 +7,35 @@ import (
 )
 
 func TestDay5(t *testing.T) {
+	inputFile := "../../input/day5_test.txt"
+	body, err := fileops.ReadFile(inputFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rules, pages := splitAndMakeSlices(body)
+	validUpdatesIdx, invalidUpdatesIdx := getIdxValidInvalid(rules, pages)
+
+	validNumbers := createNmbSlices(pages, validUpdatesIdx)
+	invalidNumbers := createNmbSlices(pages, invalidUpdatesIdx)
+
 	t.Run("Test Day 5 Puzzle 1", func(t *testing.T) {
-		inputFile := "../../input/day5_test.txt"
-		expectedResult := 143 // Erwartetes Ergebnis
 
-    body, err := fileops.ReadFile(inputFile)
-    if err != nil {
-        t.Fatal(err)
-    }
-    data, data2 := splitAndMakeSlices(body)
+		expectedResult := 143
 
-    orderArray := checkForRightOrder(data, data2)
-
-    result := findMiddleAndSum(orderArray, data2)
-
-    if  result != expectedResult {
-        t.Errorf("Erwartetes Ergebnis: %d, erhalten: %d", expectedResult, result)
-    }
-
+		result := findMiddleAndSum(validNumbers)
+		if result != expectedResult {
+			t.Errorf("Erwartetes Ergebnis: %d, erhalten: %d", expectedResult, result)
+		}
 	})
+	t.Run("Test Day 5 Puzzle 2", func(t *testing.T) {
+
+		expectedResult := 123
+		fixedInvalidNumbers := fixOrder(rules, invalidNumbers)
+		result := findMiddleAndSum(fixedInvalidNumbers)
+		if result != expectedResult {
+			t.Errorf("Erwartetes Ergebnis: %d, erhalten: %d", expectedResult, result)
+		}
+	})
+
 }

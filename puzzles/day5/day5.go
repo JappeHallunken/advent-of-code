@@ -94,7 +94,7 @@ func findMiddleAndSum(validPageNumberIdx []int, pageNumbers [][]int) (sum int) {
 }
 
 
-func Day5(input string) {
+func Day5(input string) (sum int){
 
 	var orderRules, pageNumbers [][]int
 	body, err := fileops.ReadFile(input)
@@ -108,7 +108,8 @@ func Day5(input string) {
 	validUpdates := checkForRightOrder(orderRules, pageNumbers)
   // fmt.Println("Day 5 puzzle 1: ", validUpdates)
 
-  sum := findMiddleAndSum(validUpdates, pageNumbers)
-  fmt.Println("Day 5 puzzle 2: ", sum)
+  sum = findMiddleAndSum(validUpdates, pageNumbers)
+  // fmt.Println("Day 5 puzzle 2: ", sum)
+  return sum
 
 }

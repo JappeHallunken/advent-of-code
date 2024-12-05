@@ -67,28 +67,31 @@ func makeString(body []byte) string {
 
 // ///"main"
 
-func Day3(input string) {
+func Day3(input string) (sum1, sum2 int) {
 	// Read the input file
 	body, err := fileops.ReadFile(input)
 	if err != nil {
 		fmt.Printf("Day 3: Error reading file: %v\n", err)
-	} else {
-
-		// Puzzle 1: Calculate the sum
-		sum, err := calculateSum(body)
-		if err != nil {
-			fmt.Println("Error in Puzzle 1: ", err)
-			return
-		}
-		fmt.Println("Day 3 puzzle 1: ", sum)
-
-		// Puzzle 2: Transform the string and calculate the sum again
-		transformedString := makeString(body)
-		sum2, err2 := calculateSum([]byte(transformedString))
-		if err2 != nil {
-			fmt.Println("Error in Puzzle 2: ", err2)
-			return
-		}
-		fmt.Println("Day 3 puzzle 2: ", sum2)
+		return 0, 0 // Falls ein Fehler auftritt, Rückgabe von Standardwerten
 	}
+
+	// Puzzle 1: Calculate the sum
+	sum1, err = calculateSum(body)
+	if err != nil {
+		fmt.Println("Error in Puzzle 1: ", err)
+		return 0, 0 // Fehlerbehandlung, Rückgabe von Standardwerten
+	}
+	// fmt.Println("Day 3 puzzle 1: ", sum1)
+
+	// Puzzle 2: Transform the string and calculate the sum again
+	transformedString := makeString(body)
+	sum2, err = calculateSum([]byte(transformedString))
+	if err != nil {
+		fmt.Println("Error in Puzzle 2: ", err)
+		return sum1, 0 // Rückgabe von sum1 und Standardwert für sum2
+	}
+	// fmt.Println("Day 3 puzzle 2: ", sum2)
+
+	// Am Ende werden die aktualisierten Werte von sum1 und sum2 zurückgegeben
+	return sum1, sum2
 }

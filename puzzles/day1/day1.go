@@ -48,7 +48,7 @@ func similarityScore(firstElements, secondElements []int) (score int) {
 	return score
 }
 
-func Day1(input string) {
+func Day1(input string) (diff, score int) {
 	//prepare
 	 body, err := fileops.ReadFile(input)
 	firstElements, secondElements := fileops.MakeSlices(body)
@@ -57,10 +57,12 @@ func Day1(input string) {
 	} else {
 
 		// puzzle 1
-		diff := sumDiff(firstElements, secondElements)
-		fmt.Println("Day 1 Puzzle 1: ", diff)
+		diff = sumDiff(firstElements, secondElements)
+		// fmt.Println("Day 1 Puzzle 1: ", diff)
 		// puzzle 2
-		score := similarityScore(firstElements, secondElements)
-		fmt.Println("Day 1 puzzle 2: ", score)
+		score = similarityScore(firstElements, secondElements)
+		// fmt.Println("Day 1 puzzle 2: ", score)
+    
 	}
+  return diff, score 
 }

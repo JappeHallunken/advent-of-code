@@ -20,15 +20,10 @@ func SolveAll() {
 	d3p1, d3p2 := day3.Day3("./input/day3.txt")
 	fmt.Printf("Day 3 puzzle 1: %v\n      puzzle 2: %v \n------------------------------\n\n", d3p1, d3p2)
 
-<<<<<<< HEAD
-  d4p1, d4p2 := day4.Day4("./input/day4.txt")
-	fmt.Printf("Day 4 puzzle 1: %v\n      puzzle 2: %v \n------------------------------\n\n", d4p1, d4p2)
-=======
 	d4p1, d4p2 := day4.Day4("./input/day4.txt")
 	fmt.Printf("Day 4 puzzle 1: %v\nDay 4 puzzle 2: %v \n------------------------------\n\n", d4p1, d4p2)
 	
   d5p1 := day5.Day5("./input/day5.txt")
 	fmt.Printf("Day 5 puzzle 1: %v\nDay 4 puzzle 2: TBD \n------------------------------\n\n", d5p1, )
->>>>>>> 5c27bc6b013597f2431687be16f391949a89b8a2
 
 }

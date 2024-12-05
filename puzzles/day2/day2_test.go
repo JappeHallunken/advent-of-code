@@ -14,7 +14,7 @@ func TestCustomSequences(t *testing.T) {
 		{1, 3, 6, 7, 9},
 	}
 
-	t.Run("Test SequenceType", func(t *testing.T) {
+	t.Run("Day 2 puzzle 1", func(t *testing.T) {
 		expectedScore1 := 2
 		totalScore1 := 0
 
@@ -28,7 +28,7 @@ func TestCustomSequences(t *testing.T) {
 		}
 	})
 
-	t.Run("Test CountValidSequencesWithOneRemoved", func(t *testing.T) {
+	t.Run("Day 2 puzzle 2", func(t *testing.T) {
 		expectedScore2 := 4
 		totalScore2 := 0
 

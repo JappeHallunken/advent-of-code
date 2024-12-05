@@ -1,14 +1,13 @@
 package day4
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/JappeHallunken/advent-of-code/fileops"
 )
 
 func TestFindMatch(t *testing.T) {
-  t.Run("TestFindMatch", func(t *testing.T) {
+  t.Run("Day 4 puzzle 1", func(t *testing.T) {
     
   
     // Read the test input from a file
@@ -33,7 +32,7 @@ func TestFindMatch(t *testing.T) {
 }
 
 func TestFindMatch2(t *testing.T) {
-  t.Run("TestFindMatch2", func(t *testing.T) {
+  t.Run("Day 4 puzzle 2", func(t *testing.T) {
     
   
     // Read the test input from a file
@@ -51,8 +50,6 @@ func TestFindMatch2(t *testing.T) {
 
     if counter != expectedCounter {
         t.Errorf("Expected counter to be %d, but got %d", expectedCounter, counter)
-    }else{
-      fmt.Println("Day 4 puzzle 2: ", counter)
     }
   })
 }

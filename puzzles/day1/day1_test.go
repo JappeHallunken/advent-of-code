@@ -36,7 +36,7 @@ func TestPuzzles(t *testing.T) {
 	}
 
 	// Run SimilarityScore tests
-	t.Run("SimilarityScore", func(t *testing.T) {
+	t.Run("Day 1 puzzle 2", func(t *testing.T) {
 		runTest(t, similarityTests, similarityScore, firstElements, secondElements)
 	})
 
@@ -52,7 +52,7 @@ func TestPuzzles(t *testing.T) {
 	}
 
 	// Run SumDiff tests
-	t.Run("SumDiff", func(t *testing.T) {
+	t.Run("Day 1 puzzle 1", func(t *testing.T) {
 		runTest(t, sumDiffTests, sumDiff, firstElements, secondElements)
 	})
 }

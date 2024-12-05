@@ -13,7 +13,7 @@ func MockReadFile2() []byte {
 }
 
 func TestCalculateSum(t *testing.T) {
-	t.Run("TestCalculateSum", func(t *testing.T) {
+	t.Run("Day 3 puzzle 1", func(t *testing.T) {
 		expected := 161
 
 		body := MockReadFile()
@@ -27,7 +27,7 @@ func TestCalculateSum(t *testing.T) {
 }
 
 func TestMakeString(t *testing.T) {
-	t.Run("TestMakeString", func(t *testing.T) {
+	t.Run("Day 3 puzzle 2", func(t *testing.T) {
 		body := MockReadFile2()
 
 		newString := makeString(body)

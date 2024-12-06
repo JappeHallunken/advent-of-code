@@ -2,21 +2,11 @@ package day4
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/JappeHallunken/advent-of-code/fileops"
 )
 
-func makeArrays(body []byte) [][]rune { //take the textfile and make a 2d array
 
-	lines := strings.Split(strings.TrimSpace(string(body)), "\n")
-	var xmasArray [][]rune
-
-	for _, line := range lines {
-		xmasArray = append(xmasArray, []rune(line))
-	}
-	return xmasArray
-}
 
 // puzzle
 func findMatch(array [][]rune) int {
@@ -104,7 +94,7 @@ func Day4(input string) (counter, counter2 int) {
 	if err != nil {
 		fmt.Printf("Day 4: Error reading file: %v\n", err)
 	} else {
-		xmasArray := makeArrays(body)
+		xmasArray := fileops.MakeSlice(body)
 
 		// puzzle 1
 		counter= findMatch(xmasArray)

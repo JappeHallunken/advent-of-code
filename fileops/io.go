@@ -30,3 +30,13 @@ func MakeSlices(body []byte) (firstElements, secondElements []int) {
 	}
 	return firstElements, secondElements
 }
+
+func MakeSlice(body []byte) (slice [][]rune) { //take the textfile and make a 2d array
+
+	lines := strings.Split(strings.TrimSpace(string(body)), "\n")
+
+	for _, line := range lines {
+		slice = append(slice, []rune(line))
+	}
+	return slice
+}

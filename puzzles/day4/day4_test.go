@@ -18,7 +18,7 @@ func TestFindMatch(t *testing.T) {
     }
 
     // Convert the input data to a 2D array of runes
-    xmasArray := makeArrays(body)
+    xmasArray := fileops.MakeSlice(body)
 
     // Call the findMatch function with the input data
     counter := findMatch(xmasArray)
@@ -42,7 +42,7 @@ func TestFindMatch2(t *testing.T) {
         t.Fatal(err)
     }
 
-    xmasArray := makeArrays(body)
+    xmasArray := fileops.MakeSlice(body)
 
     counter := findMatch2(xmasArray)
 

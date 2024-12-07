@@ -2,7 +2,7 @@ package day6
 
 import (
 	// "fmt"
-	"slices"
+
 
 	"github.com/JappeHallunken/advent-of-code/fileops"
 )
@@ -54,38 +54,35 @@ func getStartPoint(slice [][]rune) (startPoint point) {
 	return startPoint
 }
 
-var visitedPositions []point
+// we use this for the second puzzle
 
-func findWays(input string) int {
+func findWays(input string) (visitedPositions []point, length int) {
 
 	slice := createRuneSlice(input)
 	start := getStartPoint(slice)
 
 	position := start
 	directionsIndex := startDirectionIndex
-	startDirection := directions[directionsIndex]
-	direction := startDirection
+	direction := directions[directionsIndex]
 
 	xLength := len(slice[0])
 	yLength := len(slice)
-	visitedPositions = append(visitedPositions, start)
+
+	visited := make(map[point]bool)
+	visited[start] = true
+	visitedPositions = append(visitedPositions, start) // Startpunkt hinzufügen
 
 	// fmt.Println("dimensions: ", xLength, yLength)
 	// fmt.Println("start: ", start)
 	// fmt.Println("direction: ", startDirection)
 
-	outsideArea := false
-
-	for !outsideArea {
-		// fmt.Println("steps: ", steps)
-		// fmt.Println("current position: ", position)
-
-		nextPosition := point{position.x + direction.x, position.y + direction.y}
+	for {
+		nextPosition := point{
+			x: position.x + direction.x,
+			y: position.y + direction.y,
+		}
 
 		if nextPosition.x < 0 || nextPosition.x >= xLength || nextPosition.y < 0 || nextPosition.y >= yLength {
-			// fmt.Println("leaving area")
-			outsideArea = true
-
 			break
 		}
 
@@ -94,26 +91,23 @@ func findWays(input string) int {
 			directionsIndex = (directionsIndex + 1) % len(directions) // get next direction of directionsSlice, wrap around if necessary
 			direction = directions[directionsIndex]
 
-			//    fmt.Println("found obstacle")
-			// fmt.Println("new direction: ", direction)
-			//
 			continue
 		}
-		if slice[nextPosition.x][nextPosition.y] == '.' {
 
-			position = nextPosition
-			if !slices.Contains(visitedPositions, position) {
-				visitedPositions = append(visitedPositions, position)
-			}
+		position = nextPosition
+
+		if !visited[position] {
+			visited[position] = true
+			visitedPositions = append(visitedPositions, position)
+			// fmt.Println(visited)
 		}
-		// fmt.Println("next position: ", position)
 	}
-	// fmt.Println(visitedPositions)
-	return len(visitedPositions)
+	return visitedPositions, len(visitedPositions)
 }
 
 func testForLoop(input string) (loopCount int) {
 	slice := createRuneSlice(input)
+	visitedPositions, _ := findWays(input)
 
 	xLength := len(slice[0])
 	yLength := len(slice)
@@ -123,7 +117,7 @@ func testForLoop(input string) (loopCount int) {
 	loopcount := 0
 
 	for _, p := range visitedPositions {
-		
+
 		// set every point in the [][]rune to '#' and see if we get a loop
 		// record the turning positions, if they repeat we are in a loop
 		// turningPosIdx := 0
@@ -197,7 +191,7 @@ func compareLastWithSubset(arr []point) bool {
 func Day6(input string) (score1, score2 int) {
 
 	// puzzle 1
-	score1 = findWays(input)
+	_, score1 = findWays(input)
 
 	// puzzle 2
 	score2 = testForLoop(input)

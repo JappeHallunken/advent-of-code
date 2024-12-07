@@ -3,7 +3,6 @@ package day6
 import (
 	// "fmt"
 
-
 	"github.com/JappeHallunken/advent-of-code/fileops"
 )
 
@@ -70,12 +69,7 @@ func findWays(input string) (visitedPositions []point, length int) {
 
 	visited := make(map[point]bool)
 	visited[start] = true
-	visitedPositions = append(visitedPositions, start) // Startpunkt hinzufügen
-
-	// fmt.Println("dimensions: ", xLength, yLength)
-	// fmt.Println("start: ", start)
-	// fmt.Println("direction: ", startDirection)
-
+	visitedPositions = append(visitedPositions, start) //
 	for {
 		nextPosition := point{
 			x: position.x + direction.x,
@@ -105,72 +99,62 @@ func findWays(input string) (visitedPositions []point, length int) {
 	return visitedPositions, len(visitedPositions)
 }
 
-func testForLoop(input string) (loopCount int) {
+func testForLoop(input string) int {
 	slice := createRuneSlice(input)
 	visitedPositions, _ := findWays(input)
-
-	xLength := len(slice[0])
-	yLength := len(slice)
-
 	start := getStartPoint(slice)
-	// fmt.Println("start: ", start)
-	loopcount := 0
+
+	loopCount := 0
 
 	for _, p := range visitedPositions {
-
-		// set every point in the [][]rune to '#' and see if we get a loop
-		// record the turning positions, if they repeat we are in a loop
-		// turningPosIdx := 0
-		position := start
-		directionsIndex := startDirectionIndex
-		direction := directions[directionsIndex]
-
-		var turningPos []point
 		if slice[p.x][p.y] == '#' {
 			continue
 		}
 
 		slice[p.x][p.y] = '#'
 
-		outsideArea, foundLoop := false, false
-		for !outsideArea || !foundLoop {
-
-			nextPosition := point{position.x + direction.x, position.y + direction.y}
-
-			if nextPosition.x < 0 || nextPosition.x >= xLength || nextPosition.y < 0 || nextPosition.y >= yLength {
-				// fmt.Println("###### leaving area ######", nextPosition)
-				outsideArea = true
-				break
-			}
-
-			if slice[nextPosition.x][nextPosition.y] == '#' {
-
-				directionsIndex = (directionsIndex + 1) % len(directions) // get next direction of directionsSlice, wrap around if necessary
-				direction = directions[directionsIndex]
-				turningPos = append(turningPos, position)
-
-				// fmt.Println("found obstacle", position)
-
-				continue
-			}
-			if compareLastWithSubset(turningPos) {
-				loopcount++
-				foundLoop = true
-				// fmt.Println("loopcount: ", loopcount, "  ", i, j)
-				// fmt.Println("turning points: ", turningPos)
-				// fmt.Println("found loop at: ", turningPos[len(turningPos)-1])
-				break
-			}
-
-			if slice[nextPosition.x][nextPosition.y] != '#' {
-				position = nextPosition
-			}
-			// fmt.Println(turningPos)
+		if detectsLoop(slice, start) {
+			loopCount++
 		}
+
 		slice[p.x][p.y] = '.'
 	}
 
-	return loopcount
+	return loopCount
+}
+
+func detectsLoop(slice [][]rune, start point) bool {
+	xLength := len(slice[0])
+	yLength := len(slice)
+	position := start
+	directionsIndex := startDirectionIndex
+	direction := directions[directionsIndex]
+
+	var turningPos []point
+
+	for {
+		nextPosition := point{
+			x: position.x + direction.x,
+			y: position.y + direction.y,
+		}
+
+		if nextPosition.x < 0 || nextPosition.x >= yLength || nextPosition.y < 0 || nextPosition.y >= xLength {
+			return false
+		}
+
+		if slice[nextPosition.x][nextPosition.y] == '#' {
+			directionsIndex = (directionsIndex + 1) % len(directions)
+			direction = directions[directionsIndex]
+			turningPos = append(turningPos, position)
+			continue
+		}
+
+		if compareLastWithSubset(turningPos) {
+			return true
+		}
+
+		position = nextPosition
+	}
 }
 
 func compareLastWithSubset(arr []point) bool {

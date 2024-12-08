@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-type coordinates struct {
-	x int
-	y int
+type Coordinates struct {
+	X int
+	Y int
 }
 
 func ReadFile(path string) ([]byte, error) {
@@ -61,15 +61,15 @@ func MakeSlice(body []byte) (slice [][]rune) { //take the textfile and make a 2d
 	return slice
 }
 
-func ByteToCoordRuneMap(body []byte) (points map[coordinates]rune) {
+func ByteToCoordRuneMap(body []byte) (points map[Coordinates]rune) {
 
-	points = make(map[coordinates]rune)
+	points = make(map[Coordinates]rune)
 
 	lines := strings.Split(strings.TrimSpace(string(body)), "\n")
 
 	for i := range lines {
 		for j := range lines[i] {
-			points[coordinates{i, j}] = rune(lines[i][j])
+			points[Coordinates{i, j}] = rune(lines[i][j])
 		}
 	}
 	return points
@@ -84,5 +84,10 @@ func PrintMap(body []string) {
 		}
 		fmt.Println()
 	}
-
+	// for i := range body {
+	// 	for j := range body[i] {
+	// 		fmt.Print(i,".", j, " ")
+	// 	}
+	// 	fmt.Println()
+	// }
 }

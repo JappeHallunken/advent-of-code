@@ -51,10 +51,10 @@ func findOperators(equations [][]uint64) (pass2Ops, pass3Ops, combinedLines []in
 			combinedLines = append(combinedLines, r)
 
 		} else {
-			if (findCombinations(equations[r])) { // 3 operators
+			if findCombinations(equations[r]) { // 3 operators
 				// fmt.Println("check valid Invald: ", equations[r])
 				pass3Ops = append(pass3Ops, r)
-        // fmt.Println("add line: ", r)
+				// fmt.Println("add line: ", r)
 				combinedLines = append(combinedLines, r)
 			}
 		}
@@ -110,13 +110,12 @@ func calculate(nums []uint64, operators []rune) (result uint64) {
 	return result
 }
 
-
 func printEquation(nums []uint64, operators []rune, result uint64) {
 	equation := strconv.FormatUint(nums[1], 10)
 	for i, operator := range operators {
 		equation += string(operator) + strconv.FormatUint(nums[i+2], 10)
 	}
-	// fmt.Printf("Equation: %v = %v\n", strconv.FormatUint(result, 10), equation)
+	//  mt.Printf("Equation: %v = %v\n", strconv.FormatUint(result, 10), equation)
 }
 
 func calculateSum(validLines []int, equations [][]uint64) uint64 {
@@ -155,8 +154,8 @@ func evaluate(numbers []uint64, operators []rune) uint64 {
 
 func findCombinations(numbers []uint64) bool {
 	operators := []rune{'+', '*', '|'}
-  target := numbers[0]
-  n := len(numbers[1:]) - 1
+	target := numbers[0]
+	n := len(numbers[1:]) - 1
 	totalCombinations := int(math.Pow(float64(len(operators)), float64(n)))
 	// for i := 0; i < n; i++ {
 	// 	totalCombinations *= len(operators)
@@ -171,7 +170,7 @@ func findCombinations(numbers []uint64) bool {
 			tmp /= len(operators)
 		}
 		// Evaluate and compare
-    result := evaluate(numbers[1:], comb)
+		result := evaluate(numbers[1:], comb)
 		if result == target {
 			// fmt.Printf("Match found with operators: %v\n", string(comb))
 			// fmt.Printf("%v = %v with operators %v\n", target, numbers, string(comb))

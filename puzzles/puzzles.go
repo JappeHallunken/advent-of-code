@@ -9,6 +9,8 @@ import (
 	// "github.com/JappeHallunken/advent-of-code/puzzles/day4"
 	// "github.com/JappeHallunken/advent-of-code/puzzles/day5"
 	// "github.com/JappeHallunken/advent-of-code/puzzles/day6"
+	"fmt"
+
 	"github.com/JappeHallunken/advent-of-code/puzzles/day7"
 )
 
@@ -29,9 +31,9 @@ func SolveAll() {
 	// fmt.Printf("Day 5 puzzle 1: %v\nDay 5 puzzle 2: %v \n------------------------------\n\n", d5p1, d5p2)
 	//
 	//  d6p1, d6p2 := day6.Day6("./input/day6.txt")
-	// fmt.Printf("Day 5 puzzle 1: %v\nDay 5 puzzle 2: %v \n------------------------------\n\n", d6p1, d6p2 )
+	// fmt.Printf("Day 6 puzzle 1: %v\nDay 6 puzzle 2: %v \n------------------------------\n\n", d6p1, d6p2 )
 
-  day7.Day7()
-	// fmt.Printf("Day 5 puzzle 1: %v\nDay 5 puzzle 2: %v \n------------------------------\n\n", d6p1, d6p2 )
-	//
+	d7p1, d7p2, sum := day7.Day7("./input/day7.txt")
+  fmt.Printf("Day 7 puzzle 1: %v\nDay 7 puzzle 2: %v \nSum: %v \n------------------------------\n\n", d7p1, d7p2, sum)
+	 // fmt.Println(d7p1)
 }

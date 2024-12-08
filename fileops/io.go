@@ -12,6 +12,8 @@ func ReadFile(path string) ([]byte, error) {
 	return  body, err
 }
 
+
+
 func MakeSlices(body []byte) (firstElements, secondElements []int) {
 
 	content := string(body)
@@ -30,6 +32,8 @@ func MakeSlices(body []byte) (firstElements, secondElements []int) {
 	}
 	return firstElements, secondElements
 }
+
+
 
 func MakeSlice(body []byte) (slice [][]rune) { //take the textfile and make a 2d array
 

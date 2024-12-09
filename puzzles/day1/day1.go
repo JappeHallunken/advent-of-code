@@ -50,7 +50,7 @@ func similarityScore(firstElements, secondElements []int) (score int) {
 
 func Day1(input string) (diff, score int) {
 	//prepare
-	 body, err := fileops.ReadFile(input)
+	body, err := fileops.ReadFile(input)
 	firstElements, secondElements := fileops.MakeSlices(body)
 	if err != nil {
 		fmt.Printf("Day 1: Error reading file: %v\n", err)
@@ -62,7 +62,7 @@ func Day1(input string) (diff, score int) {
 		// puzzle 2
 		score = similarityScore(firstElements, secondElements)
 		// fmt.Println("Day 1 puzzle 2: ", score)
-    
+
 	}
-  return diff, score 
+	return diff, score
 }

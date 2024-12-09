@@ -35,6 +35,9 @@ func createRuneSlice(input string) (slice [][]rune) {
 
 	slice = fileops.MakeSlice(body) //create 2d rune slice of map
 
+	// lines := fileops.MakeStringSlice(body)
+	// fileops.PrintMap(lines)
+
 	return slice
 }
 

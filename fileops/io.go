@@ -1,6 +1,7 @@
 package fileops
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strconv"
@@ -98,4 +99,61 @@ func PrintMap(body []string) {
 	// 	}
 	// 	fmt.Println()
 	// }
+}
+
+func FileToMap(input string) map[Coordinates]rune {
+	file, err := os.Open(input)
+	if err != nil {
+		fmt.Println("error opening file", err)
+		return nil
+	}
+	defer file.Close()
+
+	coordinates := make(map[Coordinates]rune)
+
+	scanner := bufio.NewScanner(file)
+	y := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		for x, char := range line {
+			coordinates[Coordinates{X: x, Y: y}] = char
+		}
+		y++
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Println("error reading file:", err)
+		return nil
+	}
+
+	return coordinates
+}
+
+
+func PrintCoordMap(coordinates map[Coordinates]rune) {
+	maxX, maxY := 0, 0
+	for coord := range coordinates {
+		if coord.X > maxX {
+			maxX = coord.X
+		}
+		if coord.Y > maxY {
+			maxY = coord.Y
+		}
+	}
+
+	output := make([][]rune, maxY+1)
+	for i := range output {
+		output[i] = make([]rune, maxX+1)
+		for j := range output[i] {
+			output[i][j] = ' '
+		}
+	}
+
+	for coord, char := range coordinates {
+		output[coord.Y][coord.X] = char
+	}
+
+	for _, line := range output {
+		fmt.Println(string(line))
+	}
 }

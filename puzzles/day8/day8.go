@@ -202,6 +202,8 @@ func Day8(input string) (puzzle1, puzzle2 int) {
 		return 0, 0
 	}
 
+  // _ = fileops.FileToMap(input)
+
 	// coordMap := fileops.ByteToCoordRuneMap(body)
 	// fmt.Println(coordMap)
 

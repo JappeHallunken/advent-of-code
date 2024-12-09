@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/JappeHallunken/advent-of-code/fileops"
 )
@@ -21,7 +22,7 @@ func readFileToRuneSlice(input string) []rune {
 	return runeSlice
 }
 
-// make a string with free space as .
+// make a string with free space marked as "."
 func createBlockString(runeSlice []rune) []string {
 	var slice2 []string
 	for i, v := range runeSlice {
@@ -42,7 +43,7 @@ func createBlockString(runeSlice []rune) []string {
 			for j := 0; j < length; j++ {
 				slice2 = append(slice2, strconv.Itoa(i/2))
 			}
-		} else { //when uneven, append v-times just a "." to mark fress space
+		} else { //when uneven, append v-times just a "." to mark free space
 
 			for k := 0; k < length; k++ {
 				slice2 = append(slice2, ".")
@@ -84,6 +85,55 @@ func fillEmptySpaces(slice []string) []string {
 	// fmt.Println(slice)
 	return slice
 }
+func fillEmptySpaces2(slice []string) []string {
+
+	// fmt.Println(counter)
+	// fmt.Println(len(slice))
+	reference := slice[len(slice)-1]
+	counter := 0
+	fmt.Printf("Start! reference: %v, counter: %v\n\n", reference, counter)
+
+	for i := len(slice) - 1; i >= 0; i-- {
+		time.Sleep(100 * time.Millisecond)
+    if slice[i] == "." {
+      counter = 0
+      continue
+    }
+
+		if slice[i] == reference {
+			counter++
+
+			fmt.Printf("i: %v; reference: %v; counter: %v\n", i, reference, counter)
+		} else {
+			for j := i + 1; j < len(slice); j++ {
+				slice[j] = "."
+			}
+
+			reference = slice[i]
+
+			counter = 1
+
+			fmt.Printf("i: %v; reference: %v; counter: %v\n", i, reference, counter)
+		}
+	}
+	// for i := range slice {
+	// 	if slice[i] == "." {
+	// 		// fmt.Println("found . at:", i)
+	//
+	// 		for j := len(slice) - 1; j >= 0; j-- {
+	// 			if slice[j] != "." {
+	// 				// fmt.Println("found ", slice[j], " at:", j)
+	// 				temp := slice[i]
+	// 				slice[i] = slice[j]
+	// 				slice[j] = temp
+	// 				break
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// fmt.Println(slice)
+	return slice
+}
 
 func calculateChecksum(slice []string) (checksum int) {
 	for i, v := range slice {
@@ -97,10 +147,11 @@ func Day9(input string) (checksum int) {
 	readFileToRuneSlice(input)
 	slice := createBlockString(readFileToRuneSlice(input))
 
-	defraggedSlice := fillEmptySpaces(slice)
+	// defraggedSlice := fillEmptySpaces(slice)
 
-	checksum = calculateChecksum(defraggedSlice)
+	// checksum = calculateChecksum(defraggedSlice)
 	// fmt.Println("checksum:", checksum)
+	fillEmptySpaces2(slice)
 
 	return checksum
 }

@@ -30,7 +30,5 @@ func TestDay8(t *testing.T) {
 		} else {
 			fmt.Println("Test 2 Success!")
 		}
-
 	})
-
 }

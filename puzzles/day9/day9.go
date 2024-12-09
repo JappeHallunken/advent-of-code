@@ -50,25 +50,57 @@ func createBlockString(runeSlice []rune) []string {
 			// fmt.Println(slice2)
 		}
 	}
-	fmt.Print(slice2, "\n")
+	// fmt.Print(slice2, "\n")
 	return slice2
 }
 
 func fillEmptySpaces(slice []string) []string {
+	counter := 0
+	for i := range slice {
+		if slice[i] == "." {
 
-  for i := range slice {
-    for j := len(slice)-1; j > 0; j-- {
-      if slice[i] == "." && slice[j]!="." {
+			counter++
+		}
+	}
+	endIndex := len(slice) - counter
+	// fmt.Println(counter)
+	// fmt.Println(len(slice))
 
-      }
-    }
+	for i := 0; i < endIndex; i++ {
+		if slice[i] == "." {
+			// fmt.Println("found . at:", i)
 
-  }
-  return slice
+			for j := len(slice) - 1; j >= 0; j-- {
+				if slice[j] != "." {
+					// fmt.Println("found ", slice[j], " at:", j)
+					temp := slice[i]
+					slice[i] = slice[j]
+					slice[j] = temp
+					break
+				}
+			}
+		}
+	}
+	// fmt.Println(slice)
+	return slice
 }
 
-func Day9(input string) int {
-readFileToRuneSlice(input)
- _ = createBlockString(readFileToRuneSlice(input))
-	return 0
+func calculateChecksum(slice []string) (checksum int) {
+	for i, v := range slice {
+		value, _ := strconv.Atoi(v)
+		checksum += i * value
+	}
+	return checksum
+}
+
+func Day9(input string) (checksum int) {
+	readFileToRuneSlice(input)
+	slice := createBlockString(readFileToRuneSlice(input))
+
+	defraggedSlice := fillEmptySpaces(slice)
+
+	checksum = calculateChecksum(defraggedSlice)
+	// fmt.Println("checksum:", checksum)
+
+	return checksum
 }

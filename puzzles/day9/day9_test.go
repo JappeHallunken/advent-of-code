@@ -8,7 +8,7 @@ import (
 
 func TestDay9(t *testing.T) {
 
-  ex1 := Day9("./input/day9_test.txt")
+  ex1 := Day9("../../input/day9_test.txt")
   fmt.Println(ex1)
 
   t.Run("test 1", func(t *testing.T) {

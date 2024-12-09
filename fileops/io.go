@@ -45,6 +45,14 @@ func MakeSlices(body []byte) (firstElements, secondElements []int) {
 func MakeStringSlice(body []byte) (slice []string) {
 	content := string(body)
 	lines := strings.Split(content, "\n")
+
+	for i := len(lines) - 1; i >= 0; i-- {
+		if strings.TrimSpace(lines[i]) == "" {
+			lines = lines[:i]
+		} else {
+			break
+		}
+	}
 	for _, line := range lines {
 		slice = append(slice, strings.TrimSpace(line))
 	}

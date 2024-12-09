@@ -51,7 +51,7 @@ func createBlockString(runeSlice []rune) []string {
 			// fmt.Println(slice2)
 		}
 	}
-	// fmt.Print(slice2, "\n")
+	fmt.Print(slice2, "\n")
 	return slice2
 }
 
@@ -85,8 +85,73 @@ func fillEmptySpaces(slice []string) []string {
 	// fmt.Println(slice)
 	return slice
 }
-func fillEmptySpaces2(slice []string) []string {
 
+func scanFreeSpace(input []string) []fileops.Coordinates {
+	slice := input
+	var coordinates []fileops.Coordinates
+	i := 0
+
+	for i < len(slice) {
+		count := 0
+		if slice[i] == "." {
+			// fmt.Println("start found . at:", i)
+			for j := i + 1; j < len(slice)-1; j++ {
+				if slice[j] == "." {
+
+					count++
+				} else {
+					// fmt.Println("no . at: ", j)
+					//      fmt.Println("save to coordinates: ", i, i+count)
+
+					coordinates = append(coordinates, fileops.Coordinates{X: i, Y: i + count})
+					// fmt.Println("coordinates: ", coordinates)
+					i = i + count
+					break
+				}
+
+			}
+		}
+		i++
+	}
+	fmt.Println(coordinates)
+	return coordinates
+}
+
+func scanBlocks(slice []string) []fileops.Coordinates {
+
+	var coordinates2 []fileops.Coordinates
+	i := len(slice) - 1
+	reference := slice[i]
+	for i > 0 {
+		count := 0
+		if slice[i] != "." {
+			reference = slice[i]
+			fmt.Println("ref: ", reference)
+
+			for j := i - 1; j >= 0; j-- {
+				fmt.Println("target:  ", slice[j])
+				if slice[j] == reference {
+					count++
+				} else {
+					fmt.Println("no . at: ", j)
+					fmt.Println("save to coordinates: ", i, i+count)
+					break
+				}
+			}
+			coordinates2 = append(coordinates2, fileops.Coordinates{X: i, Y: i - count})
+			fmt.Println("coordinates: ", coordinates2)
+			fmt.Println("current i: ", i)
+			i = i - count
+			fmt.Println("new i: ", i)
+		}
+		i--
+		fmt.Println("new i--: ", i)
+	}
+	fmt.Println(coordinates2)
+	return coordinates2
+}
+
+func fillEmptySpaces2(slice []string) []string {
 	// fmt.Println(counter)
 	// fmt.Println(len(slice))
 	reference := slice[len(slice)-1]
@@ -95,25 +160,22 @@ func fillEmptySpaces2(slice []string) []string {
 
 	for i := len(slice) - 1; i >= 0; i-- {
 		time.Sleep(100 * time.Millisecond)
-    if slice[i] == "." {
-      counter = 0
-      continue
-    }
 
 		if slice[i] == reference {
 			counter++
 
-			fmt.Printf("i: %v; reference: %v; counter: %v\n", i, reference, counter)
+			fmt.Printf("%v; reference: %v; counter: %v\n", i, reference, counter)
 		} else {
-			for j := i + 1; j < len(slice); j++ {
-				slice[j] = "."
-			}
 
+			if slice[i] == "." {
+				counter = 0
+				continue
+			}
 			reference = slice[i]
 
 			counter = 1
 
-			fmt.Printf("i: %v; reference: %v; counter: %v\n", i, reference, counter)
+			fmt.Printf("%v; reference: %v; counter: %v\n", i, reference, counter)
 		}
 	}
 	// for i := range slice {
@@ -131,7 +193,7 @@ func fillEmptySpaces2(slice []string) []string {
 	// 		}
 	// 	}
 	// }
-	// fmt.Println(slice)
+	// fmt.Printlwan(slice)
 	return slice
 }
 
@@ -147,11 +209,18 @@ func Day9(input string) (checksum int) {
 	readFileToRuneSlice(input)
 	slice := createBlockString(readFileToRuneSlice(input))
 
-	// defraggedSlice := fillEmptySpaces(slice)
+	defraggedSlice := fillEmptySpaces(slice)
 
-	// checksum = calculateChecksum(defraggedSlice)
-	// fmt.Println("checksum:", checksum)
-	fillEmptySpaces2(slice)
+	checksum = calculateChecksum(defraggedSlice)
+	fmt.Println("checksum:", checksum)
+
+	slice = createBlockString(readFileToRuneSlice(input))
+	fmt.Println(len(slice))
+	_ = scanFreeSpace(slice)
+	_ = scanBlocks(slice)
+
+	// fmt.Println("coordinates:", coordinates)
+	// checksum = calculateChecksum(coordinates)
 
 	return checksum
 }

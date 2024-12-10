@@ -108,11 +108,13 @@ func scanFreeSpace(input []string) []fileops.Coordinates {
 	return coordinates
 }
 
+//creates a map of occupied space in the style of rune:{startIndex, endIndex}
 func scanBlocks(slice []string) (blocks map[int]fileops.Coordinates) {
-	//creates a map in the style of rune:{startIndex, endIndex}
 
 	block := make(map[int]fileops.Coordinates)
 	i := len(slice) - 1
+
+  // set a reference for comparison
 	reference := slice[i]
 	for i > 0 {
 		count := 0
@@ -122,7 +124,7 @@ func scanBlocks(slice []string) (blocks map[int]fileops.Coordinates) {
 			for j := i - 1; j >= 0; j-- {
 				if slice[j] == reference {
 					count++
-					// i--
+          // fmt.Println(i, j, count)
 				} else {
 					break
 				}
@@ -145,64 +147,43 @@ func defrag(original []string) (defragedString []string) {
 
 	copySlice := make([]string, len(original))
 	copy(copySlice, original)
-
+	// make the slice/map for free and occupied space
 	dataBlocks := scanBlocks(original)
 	freeSpace := scanFreeSpace(original)
-
-	// fmt.Println("copy: ", copySlice)
-	// fmt.Println("data blocks: ", dataBlocks)
-	// fmt.Println("free space: ", freeSpace)
 
 	// find max key in map for backwards iteration
 	var maxKey int
 	firstIteration := true
-
+	// find datablock with highest key
 	for key := range dataBlocks {
 		if firstIteration || key > maxKey {
 			maxKey = key
 			firstIteration = false
 		}
 	}
-	// fmt.Println("maxKey: ", maxKey)
-
 	startSearchSpace := 0
-	// startSearchBlock := maxKey
-
+  // iterate von block with highest key to lowest
 	for i := maxKey; i >= 0; i-- {
 		nextBlock := false
-		//calculate wodth of datablock
+		//calculate width of datablock
 		blockWidth := dataBlocks[i].Y - dataBlocks[i].X
 
-		// fmt.Printf("\niteration: %d\n", i)
-		// fmt.Println("block width: ", blockWidth)
-
 		// range over free space
-		for j := startSearchSpace; j < len(freeSpace) && !nextBlock; j++ { //range freeSpace {
+		for j := startSearchSpace; j < len(freeSpace) && !nextBlock; j++ {
 
 			start := freeSpace[j].X
 			oldStart := dataBlocks[i].X
+      // when new position would be behind the old one -> break
 			if start > oldStart {
 				break
 			}
-
 			//calc space width
 			spaceWidth := freeSpace[j].Y - freeSpace[j].X
-			// fmt.Printf("calc %v - %v = %v\n", freeSpace[j].Y, freeSpace[j].X, spaceWidth)
-			// fmt.Printf("found free space at: %v, width: %v\n", freeSpace[j].X, spaceWidth)
-
 			//if the data fits into the free space, move it
 			if (blockWidth <= spaceWidth) && spaceWidth > -1 {
-				// fmt.Println("space is big enough! -> move")
-				// fmt.Println("select start coord: ", start)
-				// fmt.Println("select end coord: ", start+blockWidth)
-
 				for k := 0; k < blockWidth+1; k++ {
 					copySlice[start+k] = copySlice[dataBlocks[i].X+k]
 					copySlice[dataBlocks[i].X+k] = "."
-
-					// fmt.Printf("for block %d: %v \n", i, copySlice)
-					// fmt.Println("free space: ", freeSpace)
-
 				}
 				// update the free space coordinates
 				freeSpace[j].X += blockWidth + 1

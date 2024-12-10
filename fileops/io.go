@@ -120,15 +120,43 @@ func FileToMap(input string) map[Coordinates]rune {
 		}
 		y++
 	}
-
 	if err := scanner.Err(); err != nil {
 		fmt.Println("error reading file:", err)
 		return nil
 	}
-
 	return coordinates
 }
+func FileToIntMap(input string) map[Coordinates]int {
+	file, err := os.Open(input)
+	if err != nil {
+		fmt.Println("error opening file", err)
+		return nil
+	}
+	defer file.Close()
 
+	coordinates := make(map[Coordinates]int)
+
+	scanner := bufio.NewScanner(file)
+	y := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		for x, i := range line {
+
+			i, err := strconv.Atoi(string(i))
+			if err != nil {
+				fmt.Println("error reading file:", err)
+				return nil
+			}
+			coordinates[Coordinates{X: x, Y: y}] = i
+		}
+		y++
+	}
+	if err := scanner.Err(); err != nil {
+		fmt.Println("error reading file:", err)
+		return nil
+	}
+	return coordinates
+}
 
 func PrintCoordMap(coordinates map[Coordinates]rune) {
 	maxX, maxY := 0, 0

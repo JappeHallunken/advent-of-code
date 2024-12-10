@@ -18,6 +18,7 @@ func readFileToRuneSlice(input string) []rune {
 	bodyStr := string(body)
 	bodyStr = strings.TrimSpace(bodyStr)
 	runeSlice := []rune(bodyStr)
+	// fmt.Println(string(runeSlice))
 	return runeSlice
 }
 
@@ -49,19 +50,17 @@ func createBlockString(runeSlice []rune) []string {
 			}
 		}
 	}
-
-	// for i := range slice2 {
-	//   fmt.Printf("i: %v, value: %v\n", i, slice2[i])
+	// for i, v := range slice2 {
+	//   fmt.Println(i, v)
 	// }
-	// fmt.Print(slice2, "\n")
+	// fmt.Println(slice2)
 	return slice2
 }
 
 func fillEmptySpaces(slice []string) []string {
 	counter := 0
 	for i := range slice {
-		if slice[i] == "." {
-
+		if slice[i] == "." { //count the "."
 			counter++
 		}
 	}
@@ -72,7 +71,7 @@ func fillEmptySpaces(slice []string) []string {
 
 			for j := len(slice) - 1; j >= 0; j-- {
 				if slice[j] != "." {
-					temp := slice[i]
+					temp := slice[i] // swap the positions
 					slice[i] = slice[j]
 					slice[j] = temp
 					break
@@ -179,12 +178,12 @@ func defrag(original []string) (defragedString []string) {
 
 		// range over free space
 		for j := startSearchSpace; j < len(freeSpace) && !nextBlock; j++ { //range freeSpace {
-      
-				start := freeSpace[j].X
-        oldStart := dataBlocks[i].X
-        if start > oldStart {
-          break
-        }
+
+			start := freeSpace[j].X
+			oldStart := dataBlocks[i].X
+			if start > oldStart {
+				break
+			}
 
 			//calc space width
 			spaceWidth := freeSpace[j].Y - freeSpace[j].X
@@ -205,20 +204,20 @@ func defrag(original []string) (defragedString []string) {
 					// fmt.Println("free space: ", freeSpace)
 
 				}
-					// update the free space coordinates
-        freeSpace[j].X += blockWidth+1
+				// update the free space coordinates
+				freeSpace[j].X += blockWidth + 1
 				nextBlock = true
 			}
 		}
-		// fmt.Println(copySlice)
 	}
 
+	// fmt.Println(copySlice)
 	return copySlice
 }
 
 func calculateChecksum(slice []string) (checksum int) {
 	for i, v := range slice {
-    fmt.Printf("%v / %v\n", i, len(slice))
+		// fmt.Printf("%v / %v\n", i, len(slice))
 		value, _ := strconv.Atoi(v)
 		checksum += i * value
 	}
@@ -234,9 +233,9 @@ func Day9(input string) (checksum, checksum2 int) {
 	checksum = calculateChecksum(defraggedSlice)
 
 	slice2 := createBlockString(readFileToRuneSlice(input))
-  blockSlice := defrag(slice2)
+	blockSlice := defrag(slice2)
 	// fmt.Printf("\n %v \n", blockSlice)
-	 checksum2 = calculateChecksum(blockSlice)
+	checksum2 = calculateChecksum(blockSlice)
 
 	return checksum, checksum2
 }

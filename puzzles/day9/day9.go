@@ -81,35 +81,39 @@ func fillEmptySpaces(slice []string) []string {
 }
 
 func scanFreeSpace(input []string) []fileops.Coordinates {
+  fmt.Println("scan free space")
 	slice := input
 	var coordinates []fileops.Coordinates
 	i := 0
 
 	for i < len(slice) {
-		count := 0
+    fmt.Println("i: ",i)
 		if slice[i] == "." {
+      fmt.Println("start gefunden: ", i)
+
 			for j := i + 1; j < len(slice)-1; j++ {
 				if slice[j] == "." {
-
-					count++
+          continue
 				} else {
 
-					coordinates = append(coordinates, fileops.Coordinates{X: i, Y: i + count})
-					i = i + count
+					coordinates = append(coordinates, fileops.Coordinates{X: i, Y: j - 1})
+          
+					fmt.Println("free space: ", coordinates)
+					i = j - 1
 					break
 				}
 
 			}
 		}
-		i++
+      i++
 	}
-	// fmt.Println(coordinates)
 	return coordinates
 }
 
-func scanBlocks(slice []string) []fileops.Coordinates {
+func scanBlocks(slice []string) (blocks map[int]fileops.Coordinates) {
+	//creates a map in the style of rune:{startIndex, endIndex}
 
-	var coordinates2 []fileops.Coordinates
+	block := make(map[int]fileops.Coordinates)
 	i := len(slice) - 1
 	reference := slice[i]
 	for i > 0 {
@@ -120,17 +124,23 @@ func scanBlocks(slice []string) []fileops.Coordinates {
 			for j := i - 1; j >= 0; j-- {
 				if slice[j] == reference {
 					count++
+					// i--
 				} else {
 					break
 				}
 			}
-			coordinates2 = append(coordinates2, fileops.Coordinates{X: i, Y: i - count})
+			integer, err := strconv.Atoi(reference)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			block[integer] = fileops.Coordinates{X: i - count, Y: i}
 			i = i - count
 		}
 		i--
 	}
-	// fmt.Println(coordinates2)
-	return coordinates2
+	// fmt.Println("blocks: start, end", block)
+	return block
 }
 
 func defrag(original []string) (defragedString []string) {
@@ -141,11 +151,10 @@ func defrag(original []string) (defragedString []string) {
 	dataBlocks := scanBlocks(original)
 	freeSpace := scanFreeSpace(original)
 
-
 	// fmt.Println("lenght original: ", length)
 	for i := range dataBlocks {
 
-    fmt.Printf("defrag: %v / %v\n\n", i, len(dataBlocks))
+		// fmt.Printf("defrag: %v / %v\n\n", i, len(dataBlocks))
 		blockWidth := dataBlocks[i].X - dataBlocks[i].Y + 1
 
 		for j := range freeSpace {
@@ -153,23 +162,21 @@ func defrag(original []string) (defragedString []string) {
 			filled := false
 			if blockWidth <= freeWidth {
 				start := freeSpace[j].X
-				
+
 				for k := range blockWidth {
 
-
-          if start >= dataBlocks[i].Y {
-            break
-          }
+					if start >= dataBlocks[i].Y {
+						break
+					}
 					copySlice[start+k] = original[dataBlocks[i].Y]
 					copySlice[dataBlocks[i].Y+k] = "."
-          // fmt.Println(copySlice)
+					// fmt.Println(copySlice)
 
-					
 				}
 
 				filled = true
-				freeSpace = scanFreeSpace(copySlice)
-				
+				// freeSpace = scanFreeSpace(copySlice)
+
 			}
 			if filled {
 				break
@@ -178,8 +185,6 @@ func defrag(original []string) (defragedString []string) {
 	}
 	return copySlice
 }
-
-
 
 func calculateChecksum(slice []string) (checksum int) {
 	for i, v := range slice {
@@ -197,10 +202,9 @@ func Day9(input string) (checksum, checksum2 int) {
 	checksum = calculateChecksum(defraggedSlice)
 
 	slice = createBlockString(readFileToRuneSlice(input))
-  blockSlice := defrag(slice)
-  fmt.Printf("\n %v \n", blockSlice )
-  checksum2 = calculateChecksum(blockSlice)
-
+	blockSlice := defrag(slice)
+	fmt.Printf("\n %v \n", blockSlice)
+	checksum2 = calculateChecksum(blockSlice)
 
 	return checksum, checksum2
 }

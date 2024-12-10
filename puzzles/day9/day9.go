@@ -146,13 +146,13 @@ func defrag(original []string) (defragedString []string) {
 
 	copySlice := make([]string, len(original))
 	copy(copySlice, original)
-	fmt.Println("copy: ", copySlice)
 
 	dataBlocks := scanBlocks(original)
 	freeSpace := scanFreeSpace(original)
 
-	fmt.Println("data blocks: ", dataBlocks)
-	fmt.Println("free space: ", freeSpace)
+	// fmt.Println("copy: ", copySlice)
+	// fmt.Println("data blocks: ", dataBlocks)
+	// fmt.Println("free space: ", freeSpace)
 
 	// find max key in map for backwards iteration
 	var maxKey int
@@ -164,18 +164,18 @@ func defrag(original []string) (defragedString []string) {
 			firstIteration = false
 		}
 	}
-	fmt.Println("maxKey: ", maxKey)
+	// fmt.Println("maxKey: ", maxKey)
 
 	startSearchSpace := 0
 	// startSearchBlock := maxKey
 
 	for i := maxKey; i >= 0; i-- {
 		nextBlock := false
-		fmt.Printf("\niteration: %d\n", i)
 		//calculate wodth of datablock
 		blockWidth := dataBlocks[i].Y - dataBlocks[i].X
 
-		fmt.Println("block width: ", blockWidth)
+		// fmt.Printf("\niteration: %d\n", i)
+		// fmt.Println("block width: ", blockWidth)
 
 		// range over free space
 		for j := startSearchSpace; j < len(freeSpace) && !nextBlock; j++ { //range freeSpace {
@@ -188,32 +188,29 @@ func defrag(original []string) (defragedString []string) {
 
 			//calc space width
 			spaceWidth := freeSpace[j].Y - freeSpace[j].X
-			fmt.Printf("calc %v - %v = %v\n", freeSpace[j].Y, freeSpace[j].X, spaceWidth)
-			fmt.Printf("found free space at: %v, width: %v\n", freeSpace[j].X, spaceWidth)
+			// fmt.Printf("calc %v - %v = %v\n", freeSpace[j].Y, freeSpace[j].X, spaceWidth)
+			// fmt.Printf("found free space at: %v, width: %v\n", freeSpace[j].X, spaceWidth)
 
 			//if the data fits into the free space, move it
 			if (blockWidth <= spaceWidth) && spaceWidth > -1 {
-				fmt.Println("space is big enough! -> move")
+				// fmt.Println("space is big enough! -> move")
+				// fmt.Println("select start coord: ", start)
+				// fmt.Println("select end coord: ", start+blockWidth)
 
-				fmt.Println("select start coord: ", start)
-				fmt.Println("select end coord: ", start+blockWidth)
 				for k := 0; k < blockWidth+1; k++ {
-					fmt.Println("round: ", k+1)
 					copySlice[start+k] = copySlice[dataBlocks[i].X+k]
 					copySlice[dataBlocks[i].X+k] = "."
-					// "deactivate" this freeSpace block
-					// freecSpace[j].X = 
-					// freeSpace[j].Y = -1
 
-					fmt.Printf("for block %d: %v \n", i, copySlice)
-					fmt.Println("free space: ", freeSpace)
+					// fmt.Printf("for block %d: %v \n", i, copySlice)
+					// fmt.Println("free space: ", freeSpace)
 
 				}
+					// update the free space coordinates
         freeSpace[j].X += blockWidth+1
 				nextBlock = true
 			}
 		}
-		fmt.Println(copySlice)
+		// fmt.Println(copySlice)
 	}
 
 	return copySlice
@@ -221,6 +218,7 @@ func defrag(original []string) (defragedString []string) {
 
 func calculateChecksum(slice []string) (checksum int) {
 	for i, v := range slice {
+    fmt.Printf("%v / %v\n", i, len(slice))
 		value, _ := strconv.Atoi(v)
 		checksum += i * value
 	}
@@ -236,9 +234,9 @@ func Day9(input string) (checksum, checksum2 int) {
 	checksum = calculateChecksum(defraggedSlice)
 
 	slice2 := createBlockString(readFileToRuneSlice(input))
-	_ = defrag(slice2)
+  blockSlice := defrag(slice2)
 	// fmt.Printf("\n %v \n", blockSlice)
-	// checksum2 = calculateChecksum(blockSlice)
+	 checksum2 = calculateChecksum(blockSlice)
 
 	return checksum, checksum2
 }

@@ -49,6 +49,10 @@ func createBlockString(runeSlice []rune) []string {
 			}
 		}
 	}
+
+	// for i := range slice2 {
+	//   fmt.Printf("i: %v, value: %v\n", i, slice2[i])
+	// }
 	// fmt.Print(slice2, "\n")
 	return slice2
 }
@@ -81,32 +85,27 @@ func fillEmptySpaces(slice []string) []string {
 }
 
 func scanFreeSpace(input []string) []fileops.Coordinates {
-  fmt.Println("scan free space")
 	slice := input
 	var coordinates []fileops.Coordinates
 	i := 0
 
 	for i < len(slice) {
-    fmt.Println("i: ",i)
+		// fmt.Println("i: ",i)
 		if slice[i] == "." {
-      fmt.Println("start gefunden: ", i)
-
 			for j := i + 1; j < len(slice)-1; j++ {
 				if slice[j] == "." {
-          continue
+					continue
 				} else {
-
 					coordinates = append(coordinates, fileops.Coordinates{X: i, Y: j - 1})
-          
-					fmt.Println("free space: ", coordinates)
 					i = j - 1
 					break
 				}
-
 			}
 		}
-      i++
+		i++
 	}
+
+	// fmt.Println("free space: ", coordinates)
 	return coordinates
 }
 
@@ -139,7 +138,7 @@ func scanBlocks(slice []string) (blocks map[int]fileops.Coordinates) {
 		}
 		i--
 	}
-	// fmt.Println("blocks: start, end", block)
+	// fmt.Println("scan blocks: ", block)
 	return block
 }
 
@@ -147,42 +146,76 @@ func defrag(original []string) (defragedString []string) {
 
 	copySlice := make([]string, len(original))
 	copy(copySlice, original)
+	fmt.Println("copy: ", copySlice)
 
 	dataBlocks := scanBlocks(original)
 	freeSpace := scanFreeSpace(original)
 
-	// fmt.Println("lenght original: ", length)
-	for i := range dataBlocks {
+	fmt.Println("data blocks: ", dataBlocks)
+	fmt.Println("free space: ", freeSpace)
 
-		// fmt.Printf("defrag: %v / %v\n\n", i, len(dataBlocks))
-		blockWidth := dataBlocks[i].X - dataBlocks[i].Y + 1
+	// find max key in map for backwards iteration
+	var maxKey int
+	firstIteration := true
 
-		for j := range freeSpace {
-			freeWidth := freeSpace[j].Y - freeSpace[j].X + 1
-			filled := false
-			if blockWidth <= freeWidth {
-				start := freeSpace[j].X
-
-				for k := range blockWidth {
-
-					if start >= dataBlocks[i].Y {
-						break
-					}
-					copySlice[start+k] = original[dataBlocks[i].Y]
-					copySlice[dataBlocks[i].Y+k] = "."
-					// fmt.Println(copySlice)
-
-				}
-
-				filled = true
-				// freeSpace = scanFreeSpace(copySlice)
-
-			}
-			if filled {
-				break
-			}
+	for key := range dataBlocks {
+		if firstIteration || key > maxKey {
+			maxKey = key
+			firstIteration = false
 		}
 	}
+	fmt.Println("maxKey: ", maxKey)
+
+	startSearchSpace := 0
+	// startSearchBlock := maxKey
+
+	for i := maxKey; i >= 0; i-- {
+		nextBlock := false
+		fmt.Printf("\niteration: %d\n", i)
+		//calculate wodth of datablock
+		blockWidth := dataBlocks[i].Y - dataBlocks[i].X
+
+		fmt.Println("block width: ", blockWidth)
+
+		// range over free space
+		for j := startSearchSpace; j < len(freeSpace) && !nextBlock; j++ { //range freeSpace {
+      
+				start := freeSpace[j].X
+        oldStart := dataBlocks[i].X
+        if start > oldStart {
+          break
+        }
+
+			//calc space width
+			spaceWidth := freeSpace[j].Y - freeSpace[j].X
+			fmt.Printf("calc %v - %v = %v\n", freeSpace[j].Y, freeSpace[j].X, spaceWidth)
+			fmt.Printf("found free space at: %v, width: %v\n", freeSpace[j].X, spaceWidth)
+
+			//if the data fits into the free space, move it
+			if (blockWidth <= spaceWidth) && spaceWidth > -1 {
+				fmt.Println("space is big enough! -> move")
+
+				fmt.Println("select start coord: ", start)
+				fmt.Println("select end coord: ", start+blockWidth)
+				for k := 0; k < blockWidth+1; k++ {
+					fmt.Println("round: ", k+1)
+					copySlice[start+k] = copySlice[dataBlocks[i].X+k]
+					copySlice[dataBlocks[i].X+k] = "."
+					// "deactivate" this freeSpace block
+					// freecSpace[j].X = 
+					// freeSpace[j].Y = -1
+
+					fmt.Printf("for block %d: %v \n", i, copySlice)
+					fmt.Println("free space: ", freeSpace)
+
+				}
+        freeSpace[j].X += blockWidth+1
+				nextBlock = true
+			}
+		}
+		fmt.Println(copySlice)
+	}
+
 	return copySlice
 }
 
@@ -197,14 +230,15 @@ func calculateChecksum(slice []string) (checksum int) {
 func Day9(input string) (checksum, checksum2 int) {
 	readFileToRuneSlice(input)
 	slice := createBlockString(readFileToRuneSlice(input))
-	defraggedSlice := fillEmptySpaces(slice)
+	// fmt.Println("part 1 block: ", slice)
 
+	defraggedSlice := fillEmptySpaces(slice)
 	checksum = calculateChecksum(defraggedSlice)
 
-	slice = createBlockString(readFileToRuneSlice(input))
-	blockSlice := defrag(slice)
-	fmt.Printf("\n %v \n", blockSlice)
-	checksum2 = calculateChecksum(blockSlice)
+	slice2 := createBlockString(readFileToRuneSlice(input))
+	_ = defrag(slice2)
+	// fmt.Printf("\n %v \n", blockSlice)
+	// checksum2 = calculateChecksum(blockSlice)
 
 	return checksum, checksum2
 }

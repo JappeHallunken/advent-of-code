@@ -83,7 +83,42 @@ func ByteToCoordRuneMap(body []byte) (points map[Coordinates]rune) {
 	}
 	return points
 }
-
+func FileToIntInt(input string) [][]int {
+  var matrix [][]int
+  file, err := os.Open(input)
+  if err != nil {
+    fmt.Println("error opening file", err)
+    return nil
+  }
+  defer file.Close()
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    line := scanner.Text()
+    var row []int
+    for _, c := range line {
+      i, err := strconv.Atoi(string(c))
+      if err != nil {
+        fmt.Println("error reading file:", err)
+        return nil
+      }
+      row = append(row, i)
+    }
+    matrix = append(matrix, row)
+  }
+  if err := scanner.Err(); err != nil {
+    fmt.Println("error reading file:", err)
+    return nil
+  }
+  return matrix
+}
+func PrintMatrix(matrix [][]int) {
+  for i := range matrix {
+    for j := range matrix[i] {
+      fmt.Print(matrix[i][j], " ")
+    }
+    fmt.Println()
+  }
+}
 func PrintMap(body []string) {
 	// we asume every line has same width
 

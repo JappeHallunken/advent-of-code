@@ -20,10 +20,10 @@ func isValidCoord(x, y, rows, cols int) bool {
 // DFS function to find all paths to 9 starting from a given position.
 func searchPath(topoMap [][]int, startPos Coordinates) int {
 	directions := []Coordinates{
-		{X: 0, Y: 1},  // up
-		{X: 0, Y: -1}, // down
 		{X: 1, Y: 0},  // right
+		{X: 0, Y: -1}, // down
 		{X: -1, Y: 0}, // left
+		{X: 0, Y: 1},  // up
 	}
 
 	// Map to track visited positions
@@ -31,56 +31,58 @@ func searchPath(topoMap [][]int, startPos Coordinates) int {
 	var dfs func(currentPos Coordinates, currentValue int) int
 
 	dfs = func(currentPos Coordinates, currentValue int) int {
+		time.Sleep(10 * time.Millisecond)
 		// Check if out of bounds
 		if !isValidCoord(currentPos.X, currentPos.Y, len(topoMap), len(topoMap[0])) {
 			fmt.Println("out of bounds")
 			return 0
 		}
-		fmt.Println("valid position")
 		// Check if the current position has already been visited
 		if visited[currentPos] {
-			fmt.Println("visited")
+			// fmt.Println("9 already visited")
 			return 0
 		}
 		// Check if we've found the goal (value = 9)
 		if currentValue == 9 {
 			fmt.Println("goal")
 			fmt.Printf("Zählung! currentPos: %v, currentValue: %v\n", currentPos, currentValue)
+			// mark this position as visited
+			visited[currentPos] = true
 			return 1 // Found a valid path
 		}
-
-		// Mark this position as visited
-		visited[currentPos] = true
-		fmt.Println("unvisited ", currentPos)
 
 		// Variable to count valid paths from the current position
 		count := 0
 
 		// Try all 4 possible directions
 		for _, dir := range directions {
+			// fmt.Println("direction: ", dir)
 
-			nextValue := topoMap[currentPos.X][currentPos.Y]
+			currentValue := topoMap[currentPos.X][currentPos.Y]
 			nextPos := Coordinates{X: currentPos.X + dir.X, Y: currentPos.Y + dir.Y}
+
 			// fmt.Println("current pos: ", currentPos, currentValue)
 			// fmt.Println("next pos: ", nextPos, nextValue)
 
-			printMatrixColored(topoMap, currentPos.X, currentPos.Y, nextPos.X, nextPos.Y)
-			fmt.Println("current pos: ", currentPos, currentValue)
-			fmt.Println("next pos: ", nextPos, nextValue)
-			fmt.Println()
+			// fmt.Println("current pos: ", currentPos, currentValue)
 			if isValidCoord(nextPos.X, nextPos.Y, len(topoMap), len(topoMap[0])) {
-
-				if nextValue := topoMap[nextPos.X][nextPos.Y]; nextValue > currentValue {
-
+				nextValue := topoMap[nextPos.X][nextPos.Y]
+				if nextValue == currentValue+1 {
 					// Continue DFS recursively if nextValue is greater than current value
+					// printMatrixColored(topoMap, currentPos.X, currentPos.Y, nextPos.X, nextPos.Y)
+					//      fmt.Println()
+					// fmt.Println("next pos: ", nextPos, nextValue)
 					count += dfs(nextPos, nextValue)
-					fmt.Println("count", count, currentPos, currentValue, nextPos, nextValue)
-				}
+				} //else {
+				// fmt.Println("next pos not valid ", nextValue)
+				// fmt.Println("change dir")
+				// Skip this direction if nextValue is not greater than current value
+				// }
 			}
 		}
 
 		// Backtrack: Unmark the position as visited to allow other paths
-		defer func() { visited[currentPos] = false }()
+		// defer func() { visited[currentPos] = false }()
 
 		return count
 	}
@@ -91,21 +93,21 @@ func searchPath(topoMap [][]int, startPos Coordinates) int {
 
 func printMatrixColored(matrix [][]int, currentX, currentY, nextX, nextY int) {
 	// Define ANSI color codes
-	highlightCurrent := "\033[32m" // Green for current value
-	highlightNext := "\033[34m"    // Blue for next value
+	highlightCurrent := "\033[31m" // Green for current value
+	highlightNext := "\033[36m"    // Blue for next value
 	reset := "\033[0m"             // Reset to default color
 
 	for i := 0; i < len(matrix); i++ {
 		for j := 0; j < len(matrix[i]); j++ {
 			if i == currentX && j == currentY {
 				// Highlight current value
-				fmt.Printf("%s%2d%s ", highlightCurrent, matrix[i][j], reset)
+				fmt.Printf("%s%2d%s", highlightCurrent, matrix[i][j], reset)
 			} else if i == nextX && j == nextY {
 				// Highlight next value
-				fmt.Printf("%s%2d%s ", highlightNext, matrix[i][j], reset)
+				fmt.Printf("%s%2d%s", highlightNext, matrix[i][j], reset)
 			} else {
 				// Regular value
-				fmt.Printf("%2d ", matrix[i][j])
+				fmt.Printf("%2d", matrix[i][j])
 			}
 		}
 		fmt.Println() // Newline after each row
@@ -128,12 +130,12 @@ func Day10(input string) int {
 	fileops.PrintMatrix(topoMap)
 	// List of start positions (trailheads)
 	starts := findStartPositions(topoMap)
+	// starts := []Coordinates{{X: 0, Y: 4}}
 	fmt.Println(starts)
 
 	totalScore := []int{}
 	for _, startPos := range starts {
 		fmt.Println("CURRENT START: ", startPos)
-		time.Sleep(1 * time.Second)
 		// For each trailhead, call the searchPath function
 		subScore := searchPath(topoMap, startPos)
 		totalScore = append(totalScore, subScore)

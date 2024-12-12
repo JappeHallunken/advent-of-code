@@ -34,18 +34,15 @@ func searchPath(topoMap [][]int, startPos Coordinates) int {
 		time.Sleep(10 * time.Millisecond)
 		// Check if out of bounds
 		if !isValidCoord(currentPos.X, currentPos.Y, len(topoMap), len(topoMap[0])) {
-			fmt.Println("out of bounds")
 			return 0
 		}
 		// Check if the current position has already been visited
 		if visited[currentPos] {
-			// fmt.Println("9 already visited")
 			return 0
 		}
 		// Check if we've found the goal (value = 9)
 		if currentValue == 9 {
-			fmt.Println("goal")
-			fmt.Printf("Zählung! currentPos: %v, currentValue: %v\n", currentPos, currentValue)
+			// fmt.Printf("Found 9! currentPos: %v", currentPos)
 			// mark this position as visited
 			visited[currentPos] = true
 			return 1 // Found a valid path
@@ -56,22 +53,13 @@ func searchPath(topoMap [][]int, startPos Coordinates) int {
 
 		// Try all 4 possible directions
 		for _, dir := range directions {
-			// fmt.Println("direction: ", dir)
-
 			currentValue := topoMap[currentPos.X][currentPos.Y]
 			nextPos := Coordinates{X: currentPos.X + dir.X, Y: currentPos.Y + dir.Y}
 
-			// fmt.Println("current pos: ", currentPos, currentValue)
-			// fmt.Println("next pos: ", nextPos, nextValue)
-
-			// fmt.Println("current pos: ", currentPos, currentValue)
 			if isValidCoord(nextPos.X, nextPos.Y, len(topoMap), len(topoMap[0])) {
 				nextValue := topoMap[nextPos.X][nextPos.Y]
 				if nextValue == currentValue+1 {
 					// Continue DFS recursively if nextValue is greater than current value
-					// printMatrixColored(topoMap, currentPos.X, currentPos.Y, nextPos.X, nextPos.Y)
-					//      fmt.Println()
-					// fmt.Println("next pos: ", nextPos, nextValue)
 					count += dfs(nextPos, nextValue)
 				} //else {
 				// fmt.Println("next pos not valid ", nextValue)
@@ -80,10 +68,6 @@ func searchPath(topoMap [][]int, startPos Coordinates) int {
 				// }
 			}
 		}
-
-		// Backtrack: Unmark the position as visited to allow other paths
-		// defer func() { visited[currentPos] = false }()
-
 		return count
 	}
 
@@ -141,13 +125,12 @@ func Day10(input string) int {
 		totalScore = append(totalScore, subScore)
 
 	}
-	fmt.Println(totalScore)
 	totalScoreSum := 0
 	for j := range totalScore {
 		totalScoreSum += totalScore[j]
 	}
 
 	// Output the total score (sum of all found paths)
-	fmt.Println("Total Score:", totalScore)
+	fmt.Println("Total Score:", totalScoreSum)
 	return totalScoreSum
 }

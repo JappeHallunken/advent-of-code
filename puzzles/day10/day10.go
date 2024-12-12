@@ -17,7 +17,7 @@ func isValidCoord(x, y, rows, cols int) bool {
 }
 
 // DFS function to find all paths to 9 starting from a given position.
-func searchPath(topoMap [][]int, startPos Coordinates) int {
+func searchPath(topoMap [][]int, startPos Coordinates, weight bool) int {
 	directions := []Coordinates{
 		{X: 1, Y: 0},  // right
 		{X: 0, Y: -1}, // down
@@ -28,20 +28,27 @@ func searchPath(topoMap [][]int, startPos Coordinates) int {
 	// Map to track visited positions
 	visited := make(map[Coordinates]bool)
 	var dfs func(currentPos Coordinates, currentValue int) int
-
+	trailcount := 0
 	dfs = func(currentPos Coordinates, currentValue int) int {
 		// Check if out of bounds
 		if !isValidCoord(currentPos.X, currentPos.Y, len(topoMap), len(topoMap[0])) {
 			return 0
 		}
+
 		// Check if the current position has already been visited
 		if visited[currentPos] {
-			return 0
+			if weight {
+				return 1 //if its 1. then every possible path counts. on 0 only one way per start coord counts.
+				// so with return 1 we know how many paths exists for a start coord
+			} else {
+				return 0
+			}
 		}
 		// Check if we've found the goal (value = 9)
 		if currentValue == 9 {
 			// fmt.Printf("Found 9! currentPos: %v", currentPos)
 			// mark this position as visited
+			trailcount++
 			visited[currentPos] = true
 			return 1 // Found a valid path
 		}
@@ -81,6 +88,7 @@ func printMatrixColored(matrix [][]int, currentX, currentY, nextX, nextY int) {
 
 	for i := 0; i < len(matrix); i++ {
 		for j := 0; j < len(matrix[i]); j++ {
+	
 			if i == currentX && j == currentY {
 				// Highlight current value
 				fmt.Printf("%s%2d%s", highlightCurrent, matrix[i][j], reset)
@@ -107,19 +115,17 @@ func findStartPositions(topoMap [][]int) []Coordinates {
 	return startPositions
 }
 
-func Day10(input string) int {
+func Day10(input string) (p1, p2 int) {
 	topoMap := fileops.FileToIntInt(input)
 	fileops.PrintMatrix(topoMap)
 	// List of start positions (trailheads)
 	starts := findStartPositions(topoMap)
 	// starts := []Coordinates{{X: 0, Y: 4}}
-	fmt.Println(starts)
 
-	totalScore := []int{}
+	totalScore, totalScore2 := []int{}, []int{}
 	for _, startPos := range starts {
-		fmt.Println("CURRENT START: ", startPos)
 		// For each trailhead, call the searchPath function
-		subScore := searchPath(topoMap, startPos)
+		subScore := searchPath(topoMap, startPos, false)
 		totalScore = append(totalScore, subScore)
 
 	}
@@ -128,7 +134,19 @@ func Day10(input string) int {
 		totalScoreSum += totalScore[j]
 	}
 
+	for _, startPos := range starts {
+		// For each trailhead, call the searchPath function
+		subScore2 := searchPath(topoMap, startPos, true)
+		totalScore2 = append(totalScore2, subScore2)
+
+	}
+	totalScoreSum2 := 0
+	for j := range totalScore2 {
+		totalScoreSum2 += totalScore2[j]
+	}
+
 	// Output the total score (sum of all found paths)
-	fmt.Println("Total Score:", totalScoreSum)
-	return totalScoreSum
+	fmt.Println("paths: ", totalScore)
+	fmt.Println("paths: ", totalScore2)
+	return totalScoreSum, totalScoreSum2
 }

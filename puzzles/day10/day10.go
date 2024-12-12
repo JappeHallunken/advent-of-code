@@ -31,7 +31,7 @@ func searchPath(topoMap [][]int, startPos Coordinates) int {
 	var dfs func(currentPos Coordinates, currentValue int) int
 
 	dfs = func(currentPos Coordinates, currentValue int) int {
-		time.Sleep(10 * time.Millisecond)
+		// time.Sleep(10 * time.Millisecond)
 		// Check if out of bounds
 		if !isValidCoord(currentPos.X, currentPos.Y, len(topoMap), len(topoMap[0])) {
 			return 0

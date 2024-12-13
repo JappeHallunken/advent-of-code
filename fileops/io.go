@@ -143,6 +143,15 @@ func PrintMatrix(matrix [][]int) {
     fmt.Println()
   }
 }
+
+func PrintRuneMatrix(matrix [][]rune) {
+  for i := range matrix {
+    for j := range matrix[i] {
+      fmt.Print(string(matrix[i][j]), "")
+    }
+    fmt.Println()
+  }
+}
 func PrintMap(body []string) {
 	// we asume every line has same width
 

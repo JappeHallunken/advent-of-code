@@ -83,6 +83,30 @@ func ByteToCoordRuneMap(body []byte) (points map[Coordinates]rune) {
 	}
 	return points
 }
+func FileToIntRune(input string) [][]rune {
+  var matrix [][]rune
+  file, err := os.Open(input)
+  if err != nil {
+    fmt.Println("error opening file", err)
+    return nil
+  }
+  defer file.Close()
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    line := scanner.Text()
+    var row []rune
+    for _, r := range line {
+      row = append(row, r)
+    }
+    matrix = append(matrix, row)
+  }
+  if err := scanner.Err(); err != nil {
+    fmt.Println("error reading file:", err)
+    return nil
+  }
+  return matrix
+}
+
 func FileToIntInt(input string) [][]int {
   var matrix [][]int
   file, err := os.Open(input)

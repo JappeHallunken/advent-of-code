@@ -12,7 +12,7 @@ import (
 
 	"fmt"
 
-	"github.com/JappeHallunken/advent-of-code/puzzles/day12"
+	"github.com/JappeHallunken/advent-of-code/puzzles/day13"
 )
 
 func SolveAll() {
@@ -49,8 +49,11 @@ func SolveAll() {
   // d11p2 :=  day11.Day11("./input/day11.txt", 75)
   // fmt.Printf("Day 11 puzzle 1: %v\nDya 11 puzzle 2: %v\n ------------------------------\n\n", d11p1, d11p2)
 
-  d12p1 := day12.Day12("./input/day12.txt")
-  fmt.Printf("Day 12 puzzle 1: %v\n ------------------------------\n\n", d12p1)
+  // d12p1 := day12.Day12("./input/day12.txt")
+  // fmt.Printf("Day 12 puzzle 1: %v\n ------------------------------\n\n", d12p1)
+
+  d13p1, d13p2 := day13.Day13("./input/day13.txt", "./input/day13_2.txt")
+  fmt.Printf("Day 13 puzzle 1: %v\nDay 13 puzzle 2: %v \n------------------------------\n\n", d13p1, d13p2)
 
 
 }

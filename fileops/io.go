@@ -147,7 +147,7 @@ func PrintMatrix(matrix [][]int) {
 func PrintRuneMatrix(matrix [][]rune) {
   for i := range matrix {
     for j := range matrix[i] {
-      fmt.Print(string(matrix[i][j]), "")
+      fmt.Print(string(matrix[i][j]), " ")
     }
     fmt.Println()
   }

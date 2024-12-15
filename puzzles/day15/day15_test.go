@@ -7,6 +7,6 @@ import (
 )
 
 func TestDay15(t *testing.T) {
-	input := "../../input/day15_test2.txt"
+	input := "../../input/day15_test.txt"
 	Day15(input)
 }

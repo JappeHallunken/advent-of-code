@@ -20,20 +20,21 @@ func Day15(input string) (int, int) {
 	}
 
 	matrix, movements := getMapAndMovement(body)
-	fileops.PrintRuneMatrix(matrix)
-	fmt.Printf("Movements:\n%v \n", string(movements))
-
 	start := findStartingPoint(matrix)
-	fmt.Printf("Start:\n%v \n", start)
+	// fileops.PrintRuneMatrix(matrix)
+	// fmt.Printf("Movements:\n%v \n", string(movements))
+	// fmt.Printf("Start:\n%v \n", start)
 
 	for i := 0; i < len(movements); i++ {
 		movement := movements[i]
 		start = move(matrix, movement, start)
-		fmt.Printf("After movement %v:\n", i)
-		fileops.PrintRuneMatrix(matrix)
+		// fmt.Printf("After movement %v:\n", i)
+		// fileops.PrintRuneMatrix(matrix)
 	}
+	boxPoints := getBoxPoints(matrix)
+  sum := sumBoxCoordinates(boxPoints)
 
-	return 0, 0
+	return sum, 0
 }
 
 func findStartingPoint(matrix [][]rune) Point {
@@ -62,7 +63,7 @@ func getMapAndMovement(body []byte) ([][]rune, []rune) {
 	contents := strings.Split(content, "\n\n")
 
 	stringMatrix := contents[0]
-	movementList := contents[1]
+	movementList := strings.ReplaceAll(contents[1], "\n", "") 
 
 	matrix := fileops.MakeSlice([]byte(stringMatrix))
 	movements := []rune(movementList)
@@ -103,7 +104,7 @@ func move(matrix [][]rune, movement rune, point Point) Point {
 			// Verschiebe den ersten Karton
 			matrix[currentPos.Y][currentPos.X] = '.'
 			matrix[nextPos.Y][nextPos.X] = '@' // Der Spieler geht auf den ersten Karton
-      matrix[newBoxPos.Y][newBoxPos.X] = 'O'
+			matrix[newBoxPos.Y][newBoxPos.X] = 'O'
 
 			// // Füge einen neuen Karton hinter der Reihe hinzu
 			// behindLastBoxPos := Point{X: nextPos.X + direction.X*(boxCount+1), Y: nextPos.Y + direction.Y*(boxCount+1)}
@@ -124,8 +125,6 @@ func move(matrix [][]rune, movement rune, point Point) Point {
 func countBoxes(matrix [][]rune, start Point, direction Point) int {
 	next := Point{X: start.X + direction.X, Y: start.Y + direction.Y}
 
-
-
 	// Wenn das nächste Feld eine Wand ist, stoppe die Zählung
 	if matrix[next.Y][next.X] == '#' {
 		return 0
@@ -143,4 +142,28 @@ func countBoxes(matrix [][]rune, start Point, direction Point) int {
 
 	// Wenn wir auf etwas anderes stoßen, stoppe die Zählung
 	return 0
+}
+
+func getBoxPoints(matrix [][]rune) []Point {
+	var points []Point
+	for i := range matrix {
+		for j := range matrix[i] {
+			if matrix[i][j] == 'O' {
+				points = append(points, Point{i, j})
+			}
+		}
+	}
+  // fmt.Println("Points:", points)
+	return points
+}
+
+func sumBoxCoordinates(points []Point) int {
+	sum := 0
+	for _, point := range points {
+    subSum := 100 * point.X + point.Y
+    // fmt.Println("SubSum:", subSum)
+		sum += subSum
+  }
+  // fmt.Println("Sum:", sum)
+	return sum
 }

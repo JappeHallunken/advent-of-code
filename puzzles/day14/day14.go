@@ -48,7 +48,7 @@ func Day14(input string) (int, int) {
 		if neighbourScore > maxNScore {
 			maxNScore = neighbourScore
 			maxNScoreIdx = i+1
-			fmt.Printf("new maxneighbour score of %v at: %v\n", maxNScore, maxNScoreIdx)
+			// fmt.Printf("new maxneighbour score of %v at: %v\n", maxNScore, maxNScoreIdx)
 		}
 	}
 	robots2 := getRobots(string(body))

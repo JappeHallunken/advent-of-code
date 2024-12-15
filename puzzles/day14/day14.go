@@ -17,10 +17,11 @@ type Robot struct {
 	Velocity Point
 }
 
-func Day14(input string) int {
+func Day14(input string) (int, int) {
 	xLength := 101
 	yLength := 103
-	cycles := 7055 // one cycle is one second
+	cycles := 10000 // one cycle is one second
+	score := 0
 
 	body, err := fileops.ReadFile(input)
 	if err != nil {
@@ -31,12 +32,38 @@ func Day14(input string) int {
 	space := createSpace(xLength, yLength, robots)
 	// fileops.PrintRuneMatrix(space)
 
-	space = moveRobots(space, robots, cycles)
-	fmt.Println("After", cycles, "cycles:")
-	fileops.PrintRuneMatrix(space)
-	score := getSafetyFactor(space)
+	maxNScore := 0
+	maxNScoreIdx := 0
 
-	return score
+	for i := 0; i < cycles; i++ {
+		// fmt.Printf("\n\n###### CYCLE %v ######\n", i+1)
+
+		space = moveRobots(space, robots)
+		// fmt.Println("After", cycles, "cycles:")
+		if i == 99 {
+			score = getSafetyFactor(space)
+			// fileops.PrintRuneMatrix(space)
+		}
+		neighbourScore := calcNeighbours(space)
+		if neighbourScore > maxNScore {
+			maxNScore = neighbourScore
+			maxNScoreIdx = i+1
+			fmt.Printf("new maxneighbour score of %v at: %v\n", maxNScore, maxNScoreIdx)
+		}
+	}
+	robots2 := getRobots(string(body))
+	space2 := createSpace(xLength, yLength, robots)
+	fmt.Printf("maxneighbour score of %v at: %v\n", maxNScore, maxNScoreIdx)
+	for j := 1; j < maxNScoreIdx+1; j++ {
+		space2 = moveRobots(space2, robots2)
+		if j == maxNScoreIdx {
+			fmt.Println("After", maxNScoreIdx, "cycles:")
+
+			fileops.PrintRuneMatrix(space2)
+		}
+	}
+
+	return score, maxNScoreIdx
 }
 
 func getRobots(body string) []Robot {
@@ -82,57 +109,44 @@ func createSpace(xLength, yLength int, robots []Robot) [][]rune {
 	return space
 }
 
-func moveRobots(space [][]rune, robots []Robot, cycles int) [][]rune {
+func moveRobots(space [][]rune, robots []Robot) [][]rune {
 
-	maxNScore := 0
-	maxNScoreIdx := 0
-	for i := 0; i < cycles; i++ {
-		// fmt.Printf("\n\n###### CYCLE %v ######\n", i+1)
+	// fmt.Printf("\n\n###### CYCLE %v ######\n", i+1)
 
-		for j, robot := range robots {
-			position := robot.Position
-			velocity := robot.Velocity
-			var newPos Point
-			// fmt.Println(len(space[0]), len(space))
+	for j, robot := range robots {
+		position := robot.Position
+		velocity := robot.Velocity
+		var newPos Point
+		// fmt.Println(len(space[0]), len(space))
 
-			// fmt.Printf("robot %d; pos: %v, %v; velocity: %v, %v\n", j+1, robot.Position.X, robot.Position.Y, robot.Velocity.X, robot.Velocity.Y)
-			// fmt.Printf("new position is: \npos x %v + vel x %v = %v\npos y %v + vel y %v = %v\n", position.X, velocity.X, position.X+velocity.X, position.Y, velocity.Y, position.Y+velocity.Y)
-			newPos.X = (position.X + velocity.X + len(space[0])) % len(space[0])
-			newPos.Y = (position.Y + velocity.Y + len(space)) % len(space)
+		// fmt.Printf("robot %d; pos: %v, %v; velocity: %v, %v\n", j+1, robot.Position.X, robot.Position.Y, robot.Velocity.X, robot.Velocity.Y)
+		// fmt.Printf("new position is: \npos x %v + vel x %v = %v\npos y %v + vel y %v = %v\n", position.X, velocity.X, position.X+velocity.X, position.Y, velocity.Y, position.Y+velocity.Y)
+		newPos.X = (position.X + velocity.X + len(space[0])) % len(space[0])
+		newPos.Y = (position.Y + velocity.Y + len(space)) % len(space)
 
-			// fmt.Println("new Pos is: ", newPos)
-			if space[newPos.Y][newPos.X] == '.' {
-				space[newPos.Y][newPos.X] = '1'
-			} else {
-				val := int(space[newPos.Y][newPos.X] - '0')
-				val++
-				space[newPos.Y][newPos.X] = rune(val + '0')
-			}
-			if space[position.Y][position.X] != '.' {
-				if space[position.Y][position.X] == '1' {
-					space[position.Y][position.X] = '.'
-				} else {
-					val := int(space[position.Y][position.X] - '0')
-					val--
-					space[position.Y][position.X] = rune(val + '0')
-				}
-			} else {
+		// fmt.Println("new Pos is: ", newPos)
+		if space[newPos.Y][newPos.X] == '.' {
+			space[newPos.Y][newPos.X] = '1'
+		} else {
+			val := int(space[newPos.Y][newPos.X] - '0')
+			val++
+			space[newPos.Y][newPos.X] = rune(val + '0')
+		}
+		if space[position.Y][position.X] != '.' {
+			if space[position.Y][position.X] == '1' {
 				space[position.Y][position.X] = '.'
+			} else {
+				val := int(space[position.Y][position.X] - '0')
+				val--
+				space[position.Y][position.X] = rune(val + '0')
 			}
-			robots[j].Position = newPos
-
+		} else {
+			space[position.Y][position.X] = '.'
 		}
-		// fileops.PrintRuneMatrix(space)
-		neighbourScore := calcNeighbours(space)
-		if neighbourScore > maxNScore {
-			maxNScore = neighbourScore
-			maxNScoreIdx = i
-		}
-    // fmt.Printf("maxneighbour score %v\n", maxNScore)
+		robots[j].Position = newPos
 
 	}
 
-	fmt.Printf("maxneighbour score of %v at: %v\n", maxNScore, maxNScoreIdx+1)
 	return space
 }
 

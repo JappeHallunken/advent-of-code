@@ -46,7 +46,7 @@ func SolveAll() {
 
   // d13p1, d13p2 := day13.Day13("./input/day13.txt", "./input/day13_2.txt")
   // fmt.Printf("Day 13 puzzle 1: %v\nDay 13 puzzle 2: %v \n------------------------------\n\n", d13p1, d13p2)
-  score :=  day14.Day14("./input/day14.txt")
-  fmt.Printf("Day 14 puzzle 1: %v\n ------------------------------\n\n", score)
+  score, idx :=  day14.Day14("./input/day14.txt")
+  fmt.Printf("Day 14 puzzle 1: %v\n Day 14 puzzle 2: %v\n------------------------------\n\n", score, idx)
 
 }

@@ -123,49 +123,29 @@ func moveRobots(space [][]rune, robots []Robot, cycles int) [][]rune {
 	return space
 }
 
-func calculateSafetyFactor(space [][]rune) int {
-	safetyFactor1, safetyFactor2, safetyFactor3, safetyFactor4 := 0, 0, 0, 0
-	midX := len(space[0]) / 2
-	midY := len(space) / 2
+func calculateSafetyFactor(space [][]rune, startX, endX, startY, endY int) int {
+	safetyFactor := 0
+	for i := startX; i < endX; i++ {
+		for j := startY; j < endY; j++ {
+			if space[j][i] != '.' {
+				safetyFactor += int(space[j][i] - '0')
+			}
+		}
+	}
+	return safetyFactor
+}
+
+func getSafetyFactor(space [][]rune, startX, endX, startY, endY int) int {
 	lenX := len(space[0])
 	lenY := len(space)
+	midX, midY := lenX/2, lenY/2
 
-	//quadrant 1
-	for i := 0; i < midX; i++ {
-		for j := 0; j < midY; j++ {
-			if space[j][i] != '.' {
-				safetyFactor1 += int(space[j][i] - '0')
-			}
-		}
-	}
+	// Quadranten berechnen
+	safetyFactor1 := calculateSafetyFactor(space, 0, midX, 0, midY)      // Quadrant 1
+	safetyFactor2 := calculateSafetyFactor(space, midX+1, lenX, 0, midY) // Quadrant 2
+	safetyFactor3 := calculateSafetyFactor(space, 0, midX, midY+1, lenY) // Quadrant 3
+	safetyFactor4 := calculateSafetyFactor(space, midX+1, lenX, midY+1, lenY)
 
-	//quadrant 2
-	for i := midX + 1; i < lenX; i++ {
-		for j := 0; j < midY; j++ {
-			if space[j][i] != '.' {
-				safetyFactor2 += int(space[j][i] - '0')
-			}
-		}
-	}
-
-	//quadrant 1
-	for i := 0; i < midX; i++ {
-		for j := midY + 1; j < lenY; j++ {
-			if space[j][i] != '.' {
-				safetyFactor3 += int(space[j][i] - '0')
-			}
-		}
-	}
-
-	//quadrant 2
-	for i := midX + 1; i < lenX; i++ {
-		for j := midY + 1; j < lenY; j++ {
-			if space[j][i] != '.' {
-				safetyFactor4 += int(space[j][i] - '0')
-			}
-		}
-	}
-	// fmt.Println("safety factors:", safetyFactor1, safetyFactor2, safetyFactor3, safetyFactor4)
-	safetyFactor := safetyFactor1 * safetyFactor2 * safetyFactor3 * safetyFactor4
-	return safetyFactor
+  safetyFactor := safetyFactor1 * safetyFactor2 * safetyFactor3 * safetyFactor4
+  return safetyFactor
 }

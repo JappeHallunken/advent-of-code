@@ -26,13 +26,12 @@ func Day15(input string) (int, int) {
 	start := findStartingPoint(matrix)
 	fmt.Printf("Start:\n%v \n", start)
 
-  for _, movement := range movements {
-    start = move(matrix, movement, start)
-    fmt.Printf("After movement %v:\n", movement)
-    fileops.PrintRuneMatrix(matrix)
-  }
-
-
+	for i := 0; i < len(movements); i++ {
+		movement := movements[i]
+		start = move(matrix, movement, start)
+		fmt.Printf("After movement %v:\n", i)
+		fileops.PrintRuneMatrix(matrix)
+	}
 
 	return 0, 0
 }
@@ -80,48 +79,68 @@ func move(matrix [][]rune, movement rune, point Point) Point {
 	}
 
 	direction, ok := commandMap[movement]
-
 	if !ok {
 		fmt.Printf("Unknown movement: %v\n", movement)
 		return point
 	}
 
+	// Bestimme die nächste Position des Spielers
 	currentPos := point
-
 	nextPos := Point{X: currentPos.X + direction.X, Y: currentPos.Y + direction.Y}
 
 	switch matrix[nextPos.Y][nextPos.X] {
-	case '#': // wall
+	case '#': // Wand - der Spieler bleibt an der aktuellen Position
 		return currentPos
-	case 'O': // box
-		if pushBoxes(matrix, nextPos, direction) {
-			matrix[currentPos.Y][currentPos.X] = ' ' 
-			matrix[nextPos.Y][nextPos.X] = '@'       
+	case 'O': // Box
+		// Zähle, wie viele Kartons hinter der Box stehen
+		boxCount := countBoxes(matrix, currentPos, direction)
+
+		// Berechne die Position, wohin der erste Karton verschoben werden muss
+		newBoxPos := Point{X: nextPos.X + boxCount*direction.X, Y: nextPos.Y + boxCount*direction.Y}
+
+		// Wenn das Ziel frei ist, verschiebe nur den ersten Karton
+		if matrix[newBoxPos.Y][newBoxPos.X] == '.' {
+			// Verschiebe den ersten Karton
+			matrix[currentPos.Y][currentPos.X] = '.'
+			matrix[nextPos.Y][nextPos.X] = '@' // Der Spieler geht auf den ersten Karton
+      matrix[newBoxPos.Y][newBoxPos.X] = 'O'
+
+			// // Füge einen neuen Karton hinter der Reihe hinzu
+			// behindLastBoxPos := Point{X: nextPos.X + direction.X*(boxCount+1), Y: nextPos.Y + direction.Y*(boxCount+1)}
+			// matrix[behindLastBoxPos.Y][behindLastBoxPos.X] = 'O' // Setze den neuen Karton
+
+			// Gebe die neue Position des Spielers zurück
 			return nextPos
-		} else {
-			return currentPos
 		}
-	default: 
-		matrix[currentPos.Y][currentPos.X] = ' ' 
+		// Wenn das Ziel nicht frei ist, bleibt der Spieler an der aktuellen Position
+		return currentPos
+	default:
+		// Wenn das nächste Feld leer ist, bewege den Spieler einfach
+		matrix[currentPos.Y][currentPos.X] = '.'
 		matrix[nextPos.Y][nextPos.X] = '@'
 		return nextPos
 	}
 }
+func countBoxes(matrix [][]rune, start Point, direction Point) int {
+	next := Point{X: start.X + direction.X, Y: start.Y + direction.Y}
 
-func pushBoxes(matrix [][]rune, start Point, direction Point) bool {
-	current := start
-	for {
-		next := Point{X: current.X + direction.X, Y: current.Y + direction.Y}
 
-		switch matrix[next.Y][next.X] {
-		case ' ': 
-			matrix[next.Y][next.X] = 'O'
-			matrix[current.Y][current.X] = ' '
-			return true
-		case 'O': 
-			current = next
-		default: 
-			return false
-		}
+
+	// Wenn das nächste Feld eine Wand ist, stoppe die Zählung
+	if matrix[next.Y][next.X] == '#' {
+		return 0
 	}
+
+	// Wenn das nächste Feld leer ist, stoppe die Zählung
+	if matrix[next.Y][next.X] == '.' {
+		return 0
+	}
+
+	// Wenn wir auf einen Karton stoßen, zähle ihn und gehe weiter
+	if matrix[next.Y][next.X] == 'O' {
+		return 1 + countBoxes(matrix, next, direction)
+	}
+
+	// Wenn wir auf etwas anderes stoßen, stoppe die Zählung
+	return 0
 }

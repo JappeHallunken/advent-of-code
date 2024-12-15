@@ -20,7 +20,7 @@ type Robot struct {
 func Day14(input string) int {
 	xLength := 101
 	yLength := 103
-	cycles := 100 // one cycle is one second
+	cycles := 7055 // one cycle is one second
 
 	body, err := fileops.ReadFile(input)
 	if err != nil {
@@ -32,9 +32,10 @@ func Day14(input string) int {
 	// fileops.PrintRuneMatrix(space)
 
 	space = moveRobots(space, robots, cycles)
-	// fmt.Println("After", cycles, "cycles:")
-	// fileops.PrintRuneMatrix(space)
+	fmt.Println("After", cycles, "cycles:")
+	fileops.PrintRuneMatrix(space)
 	score := getSafetyFactor(space)
+
 	return score
 }
 
@@ -82,6 +83,9 @@ func createSpace(xLength, yLength int, robots []Robot) [][]rune {
 }
 
 func moveRobots(space [][]rune, robots []Robot, cycles int) [][]rune {
+
+	maxNScore := 0
+	maxNScoreIdx := 0
 	for i := 0; i < cycles; i++ {
 		// fmt.Printf("\n\n###### CYCLE %v ######\n", i+1)
 
@@ -117,9 +121,18 @@ func moveRobots(space [][]rune, robots []Robot, cycles int) [][]rune {
 			}
 			robots[j].Position = newPos
 
-			// fileops.PrintRuneMatrix(space)
 		}
+		// fileops.PrintRuneMatrix(space)
+		neighbourScore := calcNeighbours(space)
+		if neighbourScore > maxNScore {
+			maxNScore = neighbourScore
+			maxNScoreIdx = i
+		}
+    // fmt.Printf("maxneighbour score %v\n", maxNScore)
+
 	}
+
+	fmt.Printf("maxneighbour score of %v at: %v\n", maxNScore, maxNScoreIdx+1)
 	return space
 }
 
@@ -146,6 +159,36 @@ func getSafetyFactor(space [][]rune) int {
 	safetyFactor3 := calculateSafetyFactor(space, 0, midX, midY+1, lenY) // Quadrant 3
 	safetyFactor4 := calculateSafetyFactor(space, midX+1, lenX, midY+1, lenY)
 
-  safetyFactor := safetyFactor1 * safetyFactor2 * safetyFactor3 * safetyFactor4
-  return safetyFactor
+	safetyFactor := safetyFactor1 * safetyFactor2 * safetyFactor3 * safetyFactor4
+	return safetyFactor
+}
+
+func calcNeighbours(space [][]rune) int {
+	var directions []Point
+	counter := 0
+	directions = []Point{
+		{-1, -1},
+		{0, -1},
+		{1, -1},
+		{1, 0},
+		{1, 1},
+		{0, 1},
+		{-1, 1},
+		{-1, 0},
+	}
+	for y := range space {
+		for x := range space[y] {
+			if space[y][x] != '.' {
+				for _, direction := range directions {
+					if x+direction.X < 0 || x+direction.X > len(space[0])-1 || y+direction.Y < 0 || y+direction.Y > len(space)-1 {
+						continue
+					}
+					if space[y+direction.Y][x+direction.X] != '.' {
+						counter++
+					}
+				}
+			}
+		}
+	}
+	return counter
 }

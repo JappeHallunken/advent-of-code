@@ -34,7 +34,7 @@ func Day14(input string) int {
 	space = moveRobots(space, robots, cycles)
 	// fmt.Println("After", cycles, "cycles:")
 	// fileops.PrintRuneMatrix(space)
-	score := calculateSafetyFactor(space)
+	score := getSafetyFactor(space)
 	return score
 }
 
@@ -135,7 +135,7 @@ func calculateSafetyFactor(space [][]rune, startX, endX, startY, endY int) int {
 	return safetyFactor
 }
 
-func getSafetyFactor(space [][]rune, startX, endX, startY, endY int) int {
+func getSafetyFactor(space [][]rune) int {
 	lenX := len(space[0])
 	lenY := len(space)
 	midX, midY := lenX/2, lenY/2

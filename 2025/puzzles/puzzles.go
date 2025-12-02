@@ -2,6 +2,7 @@ package puzzles
 
 import (
 	"advent-of-code-2025/puzzles/day1"
+	"advent-of-code-2025/puzzles/day2"
 	"fmt"
 )
 
@@ -9,9 +10,16 @@ func SolveAll() {
 
 	d1p1, _ := day1.P1("./puzzles/day1/input.txt")
 	d1p2, _ := day1.P2("./puzzles/day1/input.txt")
-	fmt.Println("--- Day 1 ---")
-	fmt.Printf("Day 1 puzzle 1: %v\n", d1p1)
-	fmt.Printf("Day 1 puzzle 2: %v\n", d1p2)
-	fmt.Printf("---------------\n\n")
+	fmt.Printf("----- Day 1 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d1p1, d1p2)
 
+	d2p1, err := day2.P1("./puzzles/day2/input.txt")
+	if err != nil {
+		fmt.Println("D2P1: ", err)
+		return
+	}
+	d2p2, err := day2.P2("./puzzles/day2/input.txt")
+	if err != nil {
+		fmt.Println("D2P2: ", err)
+	}
+	fmt.Printf("----- Day 2 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d2p1, d2p2)
 }

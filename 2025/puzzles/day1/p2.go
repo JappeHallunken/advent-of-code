@@ -21,8 +21,8 @@ func P2(input string) (int, error) {
 			continue
 		}
 
-		fmt.Println("start: ", current)
-		fmt.Println("rotates: ", line)
+		// fmt.Println("start: ", current)
+		// fmt.Println("rotates: ", line)
 
 		num, err := strconv.Atoi(line[1:])
 		if err != nil {
@@ -66,8 +66,8 @@ func P2(input string) (int, error) {
 			return -1, fmt.Errorf("invalid direction '%c'", dir)
 		}
 
-		fmt.Println("new point: ", current)
-		fmt.Println("crossings so far: ", counter)
+		// fmt.Println("new point: ", current)
+		// fmt.Println("crossings so far: ", counter)
 	}
 	return counter, nil
 }

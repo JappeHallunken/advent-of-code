@@ -7,14 +7,14 @@ import (
 	"testing"
 )
 
-func TestP1(t *testing.T) {
+func TestD1P1(t *testing.T) {
 
 	_, filename, _, _ := runtime.Caller(0) 
 	testFile := filepath.Join(filepath.Dir(filename), "test.txt")
 
 	result, err := day1.P1(testFile)
 	if err != nil {
-		t.Fatalf("One() returned an error: %v", err)
+		t.Fatalf("D1P1() returned an error: %v", err)
 	}
 
 	expected := 3

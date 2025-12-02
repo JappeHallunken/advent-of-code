@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 func TestDay14(t *testing.T) {

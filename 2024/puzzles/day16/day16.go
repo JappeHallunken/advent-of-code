@@ -3,7 +3,7 @@ package day16
 import (
 	"fmt"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 func Day16(input string) (int, int) {

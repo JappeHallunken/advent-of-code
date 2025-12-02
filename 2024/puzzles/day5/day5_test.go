@@ -3,7 +3,7 @@ package day5
 import (
 	"testing"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 func TestDay5(t *testing.T) {

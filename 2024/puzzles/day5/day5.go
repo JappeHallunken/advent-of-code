@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 func splitAndMakeSlices(body []byte) (rules, pages [][]int) { // split data in rules and pages slices

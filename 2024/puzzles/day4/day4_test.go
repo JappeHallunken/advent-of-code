@@ -3,7 +3,7 @@ package day4
 import (
 	"testing"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 func TestFindMatch(t *testing.T) {

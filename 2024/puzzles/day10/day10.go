@@ -3,7 +3,7 @@ package day10
 import (
 	"fmt"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 // Coordinates struct to store the X and Y positions on the map.

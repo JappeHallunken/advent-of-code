@@ -3,7 +3,7 @@ package day4
 import (
 	"fmt"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 

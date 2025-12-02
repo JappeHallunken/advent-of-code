@@ -4,7 +4,7 @@ import (
 	"fmt"
 	// "time"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 func getMapDimensions(lines []string) (width int, height int) {

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/JappeHallunken/advent-of-code/fileops"
+	"github.com/JappeHallunken/advent-of-code/2024/fileops"
 )
 
 func makeSlice(input string) (twoDIntSlice [][]uint64) {

@@ -24,6 +24,6 @@ func SolveAll() {
 	// }
 	// fmt.Printf("----- Day 2 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d2p1, d2p2)
 
-	d3p1 := day3.Day3(day3.Input)
-	fmt.Printf("----- Day 3 -----\nPuzzle 1: %v ||| Puzzle 2: TBD\n\n", d3p1)
+	d3p1, d3p2 := day3.Day3(day3.Input)
+	fmt.Printf("----- Day 3 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d3p1, d3p2)
 }

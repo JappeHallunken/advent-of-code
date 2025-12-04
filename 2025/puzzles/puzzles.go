@@ -3,7 +3,7 @@ package puzzles
 import (
 	// "advent-of-code-2025/puzzles/day1"
 	// "advent-of-code-2025/puzzles/day2"
-	"advent-of-code-2025/puzzles/day3"
+	"advent-of-code-2025/puzzles/day4"
 	"fmt"
 )
 
@@ -24,6 +24,9 @@ func SolveAll() {
 	// }
 	// fmt.Printf("----- Day 2 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d2p1, d2p2)
 
-	d3p1, d3p2 := day3.Day3(day3.Input)
-	fmt.Printf("----- Day 3 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d3p1, d3p2)
+	// d3p1, d3p2 := day3.Day3(day3.Input)
+	// fmt.Printf("----- Day 3 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d3p1, d3p2)
+
+	d4p1, d4p2 := day4.P1(day4.Input)
+	fmt.Printf("----- Day 3 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d4p1, d4p2)
 }

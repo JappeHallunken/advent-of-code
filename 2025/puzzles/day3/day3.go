@@ -49,7 +49,7 @@ func maxNumberFromSequence(jolts []int, k int) int {
 		remaining := len(jolts) - i
 
 		for len(stack) > 0 && stack[len(stack)-1] < d && len(stack)+remaining > k {
-			stack = stack[:len(stack)-1] // pop
+			stack = stack[:len(stack)-1] 
 		}
 
 		if len(stack) < k {

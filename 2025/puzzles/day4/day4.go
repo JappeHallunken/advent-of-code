@@ -1,7 +1,6 @@
 package day4
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -32,11 +31,11 @@ func P1(input string) (int, int) {
 		if removed == 0 {
 			break
 		}
-		fmt.Printf("Removed %d rolls of paper:\n", removed)
-		for row := range grid {
-			fmt.Println(string(grid[row]))
-		}
-		fmt.Println()
+		// fmt.Printf("Removed %d rolls of paper:\n", removed)
+		// for row := range grid {
+		// 	fmt.Println(string(grid[row]))
+		// }
+		// fmt.Println()
 		result2 += removed
 	}
 

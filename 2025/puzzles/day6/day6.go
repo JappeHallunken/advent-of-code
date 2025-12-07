@@ -65,7 +65,6 @@ func P1(input string) int {
 
 func P2(input string) int {
 
-	// get width for each column
 	type Column struct {
 		Start int
 		End   int
@@ -74,67 +73,71 @@ func P2(input string) int {
 
 	lines := strings.Split(input, "\n")
 	opLine := lines[len(lines)-1]
-	columns := []Column{}
-	i := len(opLine) - 1
+	dataLines := lines[:len(lines)-1]
 
-	var counter int
-	for i >= 0 {
+	// -----------------------------
+	// 1. get column widths
+	// -----------------------------
+
+	cols := []Column{}
+	counter := 0
+
+	for i := len(opLine) - 1; i >= 0; i-- {
 		counter++
 		if opLine[i] == '+' || opLine[i] == '*' {
-			columns = append(columns, Column{
+			cols = append(cols, Column{
 				Start: i + counter - 1,
 				End:   i,
 				Op:    string(opLine[i]),
 			})
-			i -= 2
+			i -= 1
 			counter = 0
-		} else {
-			i--
 		}
 	}
-	slices.Reverse(columns)
-	// fmt.Println(columns)
+	slices.Reverse(cols)
+	// fmt.Println(cols)
 
-	nums := [][]string{}
+	// -----------------------------
+	// 2. extract values
+	// -----------------------------
 
-	for _, col := range columns {
-		var num []string
-		num = append(num, col.Op)
-		for i := col.Start; i >= col.End; i-- {
-			var n string
-			for _, line := range lines[:len(lines)-1] {
-				n += string(line[i])
+	extracted := make([][]string, len(cols))
+
+	for idx, c := range cols {
+		// operator first
+		col := []string{c.Op}
+
+		for pos := c.Start; pos >= c.End; pos-- {
+			var buf strings.Builder
+			for _, ln := range dataLines {
+					buf.WriteByte(ln[pos])
 			}
-			num = append(num, strings.TrimSpace(n))
-			// fmt.Println(num)
+			col = append(col, strings.TrimSpace(buf.String()))
 		}
-		nums = append(nums, num)
+
+		extracted[idx] = col
 	}
 
-	var result int
-	for _, num := range nums {
-		op := num[0]
-		subResult, err := strconv.Atoi(num[1])
-		if err != nil {
-			fmt.Println(err)
-			return -1
-		}
-		for k := 2; k < len(num); k++ {
-			value, err := strconv.Atoi(num[k])
-			if err != nil {
-				fmt.Println(err)
-				return -2
-			}
-			switch op {
-			case "*":
-				subResult *= value
-			case "+":
-				subResult += value
-			default:
-				fmt.Println("invalid operator")
+	// -----------------------------
+	// 3. compute
+	// -----------------------------
+
+	total := 0
+
+	for _, col := range extracted {
+		op := col[0]
+
+		acc, _ := strconv.Atoi(col[1])
+
+		for _, v := range col[2:] {
+			n, _ := strconv.Atoi(v)
+			if op == "*" {
+				acc *= n
+			} else {
+				acc += n
 			}
 		}
-		result += subResult
+		total += acc
 	}
-	return result
+	return total
 }

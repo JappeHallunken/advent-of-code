@@ -15,12 +15,12 @@ func TestDay8P1(t *testing.T) {
 	}
 }
 
-// func TestDay6P2(t *testing.T) {
-//
-// 	result := day6.P2(day6.TestInput)
-//
-// 	expected := 3263827
-// 	if result != expected {
-// 		t.Errorf("expected %d, got %d", expected, result)
-// 	}
-// }
+func TestDay8P2(t *testing.T) {
+
+	result := P2(TestInput)
+
+	expected := 25272
+	if result != expected {
+		t.Errorf("expected %d, got %d", expected, result)
+	}
+}

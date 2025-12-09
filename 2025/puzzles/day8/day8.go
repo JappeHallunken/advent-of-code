@@ -51,7 +51,7 @@ func getDistance(a, b Coord) float64 {
 	return math.Sqrt(dx*dx + dy*dy + dz*dz)
 }
 
-func getTopDistances(b []Box, top int) []DistancePair {
+func getDistances(b []Box) []DistancePair {
 	var distances []DistancePair
 
 	for i := range b {
@@ -64,12 +64,10 @@ func getTopDistances(b []Box, top int) []DistancePair {
 			})
 		}
 	}
-
 	sort.Slice(distances, func(i, j int) bool {
 		return distances[i].Distance < distances[j].Distance
 	})
-
-	return distances[:top]
+	return distances
 }
 
 func createCircuits(d []DistancePair) map[int]int {
@@ -118,16 +116,15 @@ func countBoxesPerCircuit(circs Circuits) []int {
 func P1(input string) int {
 	boxes := createSlice(input)
 
-	td := getTopDistances(boxes, TopN)
+	td := getDistances(boxes)
 
-	circuits := createCircuits(td)
+	circuits := createCircuits(td[:TopN]) // only the top 10
 
 	counts := countBoxesPerCircuit(circuits)
 
 	//sort them, we need just the top 3 for the result
 	slices.Sort(counts)
 	slices.Reverse(counts)
-	// fmt.Println(counts)
 
 	result := 1
 	for _, c := range counts[:3] {
@@ -135,4 +132,39 @@ func P1(input string) int {
 	}
 
 	return result
+}
+
+func findFinalConnection(pairs []DistancePair, boxCount int) DistancePair {
+	uf := NewUF(boxCount)
+
+	for _, pair := range pairs {
+		merged := uf.Union(pair.I, pair.J)
+
+		if merged && uf.groups == 1 {
+			return pair // ← genau dieses Paar ist die gesuchte finale Verbindung
+		}
+	}
+
+	return DistancePair{} // sollte nie passieren
+}
+
+func P2(input string) int {
+
+	boxes := createSlice(input)
+	boxCount := len(boxes)
+
+	dists := getDistances(boxes)
+
+	finalPair := findFinalConnection(dists, boxCount)
+
+	var one, two int
+	for _, v := range boxes {
+		if v.ID == finalPair.I {
+			one = v.Coord[0]
+		}
+		if v.ID == finalPair.J {
+			two = v.Coord[0]
+		}
+	}
+	return one * two
 }

@@ -42,12 +42,15 @@ func SolveAll() {
 	// d6p2 := day6.P2(day6.Input)
 	// fmt.Printf("----- Day 6 -----\nPuzzle 1: %v ||| Puzzle 2: %d\n\n", d6p1, d6p2 )
 
+	// --------!! TBD !! ----------- 
 	// d7p1 := day7.P1(day7.Input)
 	// // d7p2 := day7.P2(day7.Input)
 	// fmt.Printf("----- Day 7 -----\nPuzzle 1: %v ||| Puzzle 2: TBD\n\n", d7p1 )
+	// -----------------------------
 
 	d8p1 := day8.P1(day8.Input)
+	d8p2 := day8.P2(day8.Input)
 	// d6p2 := day7.P2(day7.Input)
-	fmt.Printf("----- Day 8 -----\nPuzzle 1: %v ||| Puzzle 2: TBD\n\n", d8p1)
+	fmt.Printf("----- Day 8 -----\nPuzzle 1: %v ||| Puzzle 2: %v\n\n", d8p1, d8p2)
 
 }

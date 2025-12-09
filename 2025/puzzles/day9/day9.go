@@ -17,83 +17,111 @@ type Coord struct {
 
 type CMap map[int]Point
 
-func parseCoordinates(input string) []Coord {
-	var coords []Coord
+func parseCoordinates(input string) CMap {
+	coords := make(CMap, 0)
 	i := 1
 	for line := range strings.SplitSeq(input, "\n") {
 		var x, y int
-		fmt.Sscanf(line, "%d,%d", &x, &y)
+		_, err := fmt.Sscanf(line, "%d,%d", &x, &y)
+		if err != nil {
+			fmt.Println("error parsing line: ", err)
+			continue
+		}
 		p := Point{X: x, Y: y}
-		coords = append(coords, Coord{ID: i, Point: p})
+		coords[i] = p
+		// coords = append(coords, Coord{ID: i, Point: p})
 		i++
 	}
 	return coords
 }
 
-func calcRectangleArea(a, b Coord) int {
-	x := int(math.Abs(float64(a.Point.X)-float64(b.Point.Y))) + 1
-	y := int(math.Abs(float64(a.Point.X)-float64(b.Point.Y))) + 1
+func calcRectangleArea(a, b Point) int {
+	x := int(math.Abs(float64(a.X)-float64(b.X))) + 1
+	y := int(math.Abs(float64(a.Y)-float64(b.Y))) + 1
 
 	return x * y
 }
 
 // identifyExtremePoints returns an array with the 4 outer-most Coordinate IDs
-func identifyExtremePoints(coords []Coord) [4]int {
-	minX, maxX := coords[0].Point.X, coords[0].Point.X
-	minY, maxY := coords[0].Point.Y, coords[0].Point.Y
+func identifyExtremePoints(coords CMap) [4]int {
+	minX, maxX := math.MaxInt, math.MinInt
+	minY, maxY := math.MaxInt, math.MinInt
 
-	for _, ch := range coords {
-		if ch.Point.X < minX {
-			minX = ch.Point.X
+	for _, p := range coords {
+		if p.X < minX {
+			minX = p.X
 		}
-		if ch.Point.X > maxX {
-			maxX = ch.Point.X
+		if p.X > maxX {
+			maxX = p.X
 		}
-		if ch.Point.Y < minY {
-			minY = ch.Point.Y
+		if p.Y < minY {
+			minY = p.Y
 		}
-		if ch.Point.Y > maxY {
-			maxY = ch.Point.Y
+		if p.Y > maxY {
+			maxY = p.Y
 		}
 	}
 
 	var a, b, c, d int
+	used := make(map[int]bool)
 
-	for _, ch := range coords {
-		if ch.Point.X == minX && ch.Point.Y == minY {
-			a = ch.ID
+	// distance to extreme point
+	distance := func(p Point, targetX, targetY int) int {
+		dx := p.X - targetX
+		dy := p.Y - targetY
+		if dx < 0 {
+			dx = -dx
 		}
-		if ch.Point.X == maxX && ch.Point.Y == minY {
-			b = ch.ID
+		if dy < 0 {
+			dy = -dy
 		}
-		if ch.Point.X == minX && ch.Point.Y == maxY {
-			c = ch.ID
-		}
-		if ch.Point.X == maxX && ch.Point.Y == maxY {
-			d = ch.ID
-		}
+		return dx + dy
 	}
+
+	// choose the 4 extreme points
+	selectClosest := func(targetX, targetY int) int {
+		bestID := -1
+		bestDist := math.MaxInt
+		for id, p := range coords {
+			if used[id] {
+				continue
+			}
+			d := distance(p, targetX, targetY)
+			if d < bestDist {
+				bestDist = d
+				bestID = id
+			}
+		}
+		used[bestID] = true
+		return bestID
+	}
+
+	a = selectClosest(minX, minY) // links-oben
+	b = selectClosest(maxX, minY) // rechts-oben
+	c = selectClosest(minX, maxY) // links-unten
+	d = selectClosest(maxX, maxY) // rechts-unten
 
 	return [4]int{a, b, c, d}
 }
-
 func P1(input string) int {
 	coords := parseCoordinates(input)
-	fmt.Println(coords)
+	// fmt.Println(coords)
 
 	ep := identifyExtremePoints(coords)
-	fmt.Println(ep)
+	// fmt.Println(ep)
 
 	aMax := 0
-	for i := 0; i < len(ep); i++ {
+	for i := range ep {
 		for j := i + 1; j < len(ep); j++ {
+			a := ep[i]
+			b := ep[j]
 
-			area := calcRectangleArea(ep[i], ep[j])
-			if v > aMax {
-				aMax = v
+			area := calcRectangleArea(coords[a], coords[b])
+			if area > aMax {
+				aMax = area
 			}
 		}
 
 	}
-	return 0
+	return aMax
 }
